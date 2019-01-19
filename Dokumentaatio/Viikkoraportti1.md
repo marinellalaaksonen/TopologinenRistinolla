@@ -6,7 +6,7 @@ Mitä olen tehnyt tällä viikolla?
 Tällä viikolla aikaa on kulunut lähinnä aiheen päättämiseen, erilaisten toteutusvaihtoehtojen tutkimiseen ja määrittelydokumentin kirjoittamiseen sekä alustavaan hahmotteluun projektin mahdollisesta rakenteesta.
 
 Miten ohjelma on edistynyt?
-Git repositorio on luotu ja alustavan rakenteen ja toteutustapojen suunnittelu aloitettu.
+Git repositorio ja projekti on luotu ja alustavan rakenteen ja toteutustapojen suunnittelu aloitettu.
 
 Mitä opin tällä viikolla / tänään?
 Opin erityisesti tavoista ratkaista isojen pelipuiden läpikäyntiä.
