@@ -17,9 +17,11 @@ Pelipuun läpikäyntiin minmaxilla menee n! (jossa n on pelilaudan koko eli 12 x
 Minmaxin tilavaativuus on puun syvyys ja jokaisen solmun pelikentän koko eli O(n ^ 2). Hashtablen tilavaativuus (jos sellainen päädyttäisiin toteuttamaan) olisi tilavaativuudeltaan eksponentiaalinen, sillä mahdollisia pelitilanteita on 3^n (tosin tässä on mukana myös "laittomat" pelitilanteet kuten sellaiset joissa on ristien ja nollien lukumäärän ero on isompi kuin 1).
 
 
-Lähteet:
-http://chalkdustmagazine.com/features/topological-tic-tac-toe/
-https://materiaalit.github.io/intro-to-ai-18/part2/
-https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
-https://www.uio.no/studier/emner/matnat/ifi/INF4130/h17/undervisningsmateriale/chess-algorithms-theory-and-practice_ver2017.pdf
-https://en.wikipedia.org/wiki/Game_complexity
+
+
+### Lähteet:
+http://chalkdustmagazine.com/features/topological-tic-tac-toe/  
+https://materiaalit.github.io/intro-to-ai-18/part2/  
+https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning  
+https://www.uio.no/studier/emner/matnat/ifi/INF4130/h17/undervisningsmateriale/chess-algorithms-theory-and-practice_ver2017.pdf  
+https://en.wikipedia.org/wiki/Game_complexity  
