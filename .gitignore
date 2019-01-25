@@ -1,2 +1,7 @@
 /Ristinolla/.nb-gradle/
 .gradle/
+/Ristinolla/build/
+.classpath
+.project
+.settings/
+bin/
