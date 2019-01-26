@@ -10,9 +10,9 @@ package TicTacToeGames;
  * @author marinella
  */
 public abstract class TicTacToeGame {
-    private int size;
+    protected int size;
     protected int winCondition;
-    private String[][] board;
+    protected String[][] board;
     protected int rowOfLatestMove;
     protected int colOfLatestMove;
     
