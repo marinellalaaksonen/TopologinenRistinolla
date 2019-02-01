@@ -9,22 +9,26 @@ package TicTacToeGames;
  *
  * @author marinella
  */
-public abstract class TicTacToeGame {
-    protected int size;
-    protected int winCondition;
-    protected String[][] board;
-    protected int rowOfLatestMove;
-    protected int colOfLatestMove;
+public class TicTacToeGame {
+    private final int size;
+    private final int winCondition;
+    private Position position;
+    private final GameType type;
     
     /**
      * Constructor
      * @param size, size of the board
      * @param winCondition, how many noughts/crosses in line are needed to win
      */
-    public TicTacToeGame(int size, int winCondition) {
+    public TicTacToeGame(int size, int winCondition, GameType type) {
         this.size = size;
         this.winCondition = winCondition;
-        this.board = new String[size][size];
+        this.position = new Position(new String[size][size], -1, -1, size * size);
+        this.type = type;
+    }
+    
+    public static TicTacToeGame createBasicTicTacToe(int size, int winCondition) {
+        return new TicTacToeGame(size, winCondition, new BasicTicTacToe(size, winCondition));
     }
     
     private int convertCharToInt(char c) {
@@ -51,7 +55,9 @@ public abstract class TicTacToeGame {
      *
      * @return the board as string for printing
      */
-    public String visualBoard() {
+    @Override
+    public String toString() {
+        String[][] board = position.getBoard();
         String printedBoard = "   |";
         
         for (int i = 1; i <= size; i++) {
@@ -73,18 +79,7 @@ public abstract class TicTacToeGame {
         
         return printedBoard;
     }
-    
-    /**
-     * Checks if the move is valid
-     * @return true if the move is valid, otherwise false
-     */
-    private boolean isValidMove() {
-        if (this.rowOfLatestMove >= size || this.colOfLatestMove >= size ||
-           this.rowOfLatestMove < 0 || this.colOfLatestMove < 0) return false;
-        else if (board[rowOfLatestMove][colOfLatestMove] != null) return false;
-        else return true;
-    }
-    
+     
     /**
      *Makes the move on the board if it's valid
      * @param move move of the player as string, for example 3A,
@@ -93,38 +88,38 @@ public abstract class TicTacToeGame {
      * @return true if the move was valid, otherwise false
      */
     public boolean makeMove(String move, String turn) {
+        int row;
+        int col;
+        
         try {
-            this.rowOfLatestMove 
-                = Integer.parseInt(move.substring(0, move.length() - 1)) - 1;
-            this.colOfLatestMove 
-                = convertCharToInt(Character.toUpperCase(move.charAt(move.length() - 1))) - 1;
+            row = Integer.parseInt(move.substring(0, move.length() - 1)) - 1;
+            col = convertCharToInt(Character.toUpperCase(move.charAt(move.length() - 1))) - 1;
         } catch (NumberFormatException e) {
             return false;
         }
         
-        if (!isValidMove()) return false;
-        else {
-            board[this.rowOfLatestMove][this.colOfLatestMove] = turn;
+        if (position.makeMove(row, col, turn)) {
             return true;
         }
+        
+        return false;
     }
-    
-    /**
-     * Done for tests
-     */
-    public String[][] getBoard() {
-        return board;
-    }
-    
-    /**
-     * Checks if one side has won
-     * @return true if one side has won, otherwise false
-     */
-    public abstract boolean won();
 
-    /**
-     *
-     * @return estimated value of the game in the position given
-     */
-    public abstract int evaluate();
+    public boolean tie() {
+        return position.getMovesLeft() <= 0;
+    }
+    
+    public boolean won() {
+        return type.won(position);
+    }
+    
+
+    public String[][] getBoard() {
+        return position.getBoard();
+    }
+    
+    public Position getPosition() {
+        return position;
+    }
 }
+

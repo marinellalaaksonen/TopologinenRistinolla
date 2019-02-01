@@ -21,7 +21,7 @@ public class TicTacToeGameTest {
     
     @Before
     public void setUp() {
-        game = new BasicTicTacToe(12, 5);
+        game = TicTacToeGame.createBasicTicTacToe(12, 5);
     }
     
     @After
@@ -69,6 +69,40 @@ public class TicTacToeGameTest {
         
         assertEquals("X", game.getBoard()[6][2]);
     }
+    
+    @Test
+    public void isFinishedReturnsTrueIfTheBoardIsFull() {
+        game = TicTacToeGame.createBasicTicTacToe(3, 3);
+        
+        game.makeMove("1A", "X");
+        game.makeMove("1B", "0");
+        game.makeMove("1C", "X");
+        game.makeMove("2A", "0");
+        game.makeMove("2B", "X");
+        game.makeMove("3C", "0");
+        game.makeMove("2C", "X");
+        game.makeMove("3A", "0");
+        game.makeMove("3B", "X");
+        
+        assertEquals(true, game.tie());
+    }
+    
+    @Test
+    public void isFinishedReturnsFalseIfTheBoardIsNotFull() {
+        game = TicTacToeGame.createBasicTicTacToe(3, 3);
+        
+        game.makeMove("1A", "X");
+        game.makeMove("1B", "0");
+        game.makeMove("1C", "X");
+        game.makeMove("2A", "0");
+        game.makeMove("2B", "X");
+        game.makeMove("3C", "0");
+        game.makeMove("3C", "X");
+        game.makeMove("3A", "X");
+        game.makeMove("3B", "0");
+        
+        assertEquals(false, game.tie());
+    }
 
     /**
      * Test of visualBoard method, of class TicTacToeGame.
@@ -105,7 +139,7 @@ public class TicTacToeGameTest {
                 + " 12|   |   |   | 0 |   |   |   |   |   |   |   |   |\n"
                 + "---+---+---+---+---+---+---+---+---+---+---+---+---+\n";
               
-        assertEquals(board, game.visualBoard());
+        assertEquals(board, game.toString());
     }
 
 }

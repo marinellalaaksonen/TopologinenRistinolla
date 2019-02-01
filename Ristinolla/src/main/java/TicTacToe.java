@@ -68,13 +68,18 @@ public class TicTacToe {
         int size = gameSize();
         int winCondition = winCondition(size);
         
-        this.game = new BasicTicTacToe(size, winCondition);
-        io.print(game.visualBoard());
+        this.game = new TicTacToeGame(size, winCondition, new BasicTicTacToe(size, winCondition));
+        io.print(game.toString());
         
         Player playerX = new HumanPlayer("X");
         Player player0 = new HumanPlayer("0");
         
         play(playerX, player0);
+    }
+    
+    private Player switchPlayer(Player current, Player playerX, Player player0) {
+        if (current.equals(playerX)) return player0;
+        else return playerX;
     }
     
     /**
@@ -83,18 +88,23 @@ public class TicTacToe {
     private void play(Player playerX, Player player0) {
         Player playerInTurn = playerX;
         
-        while(!game.won()) {
+        while(!game.won() && !game.tie()) {
             io.print("Pelaajan " + playerInTurn.getMark() + " vuoro: ");
             String move = playerInTurn.move(io, game);
             
             if (!game.makeMove(move, playerInTurn.getMark())) {
                 io.print("Siirto ei ole validi");
             } else {
-                io.print(game.visualBoard());
-                if (playerInTurn.equals(playerX)) playerInTurn = player0;
-                else playerInTurn = playerX;
+                io.print(game.toString());
+                playerInTurn = switchPlayer(playerInTurn, playerX, player0);
             }
-            
+        }
+        
+        if(game.won()) {
+            playerInTurn = switchPlayer(playerInTurn, playerX, player0);
+            io.print("Pelaaja " + playerInTurn.getMark() + " voittaa, peli päättyy");
+        } else {
+            io.print("Tasapeli, peli päättyy");
         }
     }
 }

@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
  * @author marinella
  */
 public class BasicTicTacToeTest {
-    BasicTicTacToe game;
+    TicTacToeGame game;
     
     @Before
     public void setUp() {
-        game = new BasicTicTacToe(3, 3);
+        game = TicTacToeGame.createBasicTicTacToe(3, 3);
     }
     
     @After
@@ -77,7 +77,7 @@ public class BasicTicTacToeTest {
     
     @Test
     public void wonWorksWithBiggerBoard() {
-        BasicTicTacToe biggerGame = new BasicTicTacToe(5, 3);
+        TicTacToeGame biggerGame = TicTacToeGame.createBasicTicTacToe(5, 3);
         
         
         biggerGame.makeMove("2B", "X");
@@ -87,6 +87,8 @@ public class BasicTicTacToeTest {
         
         assertEquals(true, biggerGame.won());
     }
+    
+    
 
     /**
      * Test of evaluate method, of class BasicTicTacToe.
