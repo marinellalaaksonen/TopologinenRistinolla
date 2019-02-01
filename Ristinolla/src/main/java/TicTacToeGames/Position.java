@@ -17,6 +17,13 @@ public class Position {
     private final int size;
     private int movesLeft;
     
+    /**
+     * 
+     * @param board
+     * @param colOfLatestMove
+     * @param rowOfLatestMove
+     * @param movesLeft
+     */
     public Position(String[][] board, int colOfLatestMove, int rowOfLatestMove, int movesLeft) {
         this.board = board;
         this.colOfLatestMove = colOfLatestMove;
@@ -35,6 +42,13 @@ public class Position {
         else return true;
     }
     
+    /**
+     * makes the move on the board if the move is valid
+     * @param row
+     * @param col
+     * @param turn
+     * @return true if sucsessfull
+     */
     public boolean makeMove(int row, int col, String turn) {
         if (!isValidMove(row, col)) return false;
         else {
@@ -62,6 +76,11 @@ public class Position {
         );
     }
     
+    /**
+     * Generates and returns all valid next positions
+     * @param turn
+     * @return all possible next positions
+     */
     public Position[] getNextPositions(String turn) {
         Position[] nextPositions = new Position[movesLeft];
         int count = 0;
@@ -81,22 +100,42 @@ public class Position {
         return nextPositions;
     }
     
+    /**
+     *
+     * @return
+     */
     public String[][] getBoard() {
         return this.board;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getColOfLatestMove() {
         return colOfLatestMove;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRowOfLatestMove() {
         return rowOfLatestMove;
     }
      
+    /**
+     *
+     * @return
+     */
     public int getMovesLeft() {
         return movesLeft;
     }
 
+    /**
+     *
+     * @param movesLeft
+     */
     public void setMovesLeft(int movesLeft) {
         this.movesLeft = movesLeft;
     }

@@ -19,6 +19,7 @@ public class TicTacToeGame {
      * Constructor
      * @param size, size of the board
      * @param winCondition, how many noughts/crosses in line are needed to win
+     * @param type basic or other
      */
     public TicTacToeGame(int size, int winCondition, GameType type) {
         this.size = size;
@@ -27,6 +28,12 @@ public class TicTacToeGame {
         this.type = type;
     }
     
+    /**
+     *
+     * @param size
+     * @param winCondition
+     * @return new tictactoe with basic
+     */
     public static TicTacToeGame createBasicTicTacToe(int size, int winCondition) {
         return new TicTacToeGame(size, winCondition, new BasicTicTacToe(size, winCondition));
     }
@@ -105,19 +112,34 @@ public class TicTacToeGame {
         return false;
     }
 
+    /**
+     *
+     * @return true if the board is full (there are no possible moves left)
+     */
     public boolean tie() {
         return position.getMovesLeft() <= 0;
     }
     
+    /**
+     *
+     * @return true if the player in turn has won
+     */
     public boolean won() {
         return type.won(position);
     }
     
-
+    /**
+     *
+     * @return
+     */
     public String[][] getBoard() {
         return position.getBoard();
     }
     
+    /**
+     *
+     * @return
+     */
     public Position getPosition() {
         return position;
     }
