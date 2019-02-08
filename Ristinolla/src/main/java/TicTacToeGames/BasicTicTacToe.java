@@ -94,17 +94,19 @@ public class BasicTicTacToe implements GameType {
     /**
      *
      * @param turn of X or 0
-     * @return estimated value of the game in the position given
+     * @return estimated value of the game in the position given 
+     * or value of the game if finished
      */
     @Override
     public int evaluate(Position position, String turn) {
         if (won(position)) {
             return turn.equals("X") ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        } else if (position.getMovesLeft() == 0) {
+            return 0;
         }
         
         String[][] board = position.getBoard();
         int valueOfGame = 0;
-
         
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

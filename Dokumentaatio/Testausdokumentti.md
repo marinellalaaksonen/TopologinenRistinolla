@@ -1,0 +1,3 @@
+# Testausdokumentti
+
+Ohjelman koodin toiminnallisuuden oikeellisuus on varmistettu kattavalla automatisoidulla yksikkötestauksella. Lisäksi suorituskykyä on jonkin verran testattu empiirisesti erillaisilla minmaxin syvyyksillä suhteessa pelilaudan kokoon. Tämän hetkinen arvo (288/jäljellä olevien vuorojen määrä) hidastuu ainakin 9x9 laudalla n 5 siirron jälkeen liikaa, mahdollisesti johtuen evaluate-metodin toteutuksesta. Tätä arvoa testattu erityisesti raja-arvoilla 12x12, 9x9 ja 5x5.

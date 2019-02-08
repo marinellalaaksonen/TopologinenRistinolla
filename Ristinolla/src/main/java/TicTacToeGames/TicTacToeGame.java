@@ -11,7 +11,6 @@ package TicTacToeGames;
  */
 public class TicTacToeGame {
     private final int size;
-    private final int winCondition;
     private Position position;
     private final GameType type;
     
@@ -21,9 +20,8 @@ public class TicTacToeGame {
      * @param winCondition, how many noughts/crosses in line are needed to win
      * @param type basic or other
      */
-    public TicTacToeGame(int size, int winCondition, GameType type) {
+    public TicTacToeGame(int size, GameType type) {
         this.size = size;
-        this.winCondition = winCondition;
         this.position = new Position(new String[size][size], -1, -1, size * size);
         this.type = type;
     }
@@ -35,15 +33,22 @@ public class TicTacToeGame {
      * @return new tictactoe with basic
      */
     public static TicTacToeGame createBasicTicTacToe(int size, int winCondition) {
-        return new TicTacToeGame(size, winCondition, new BasicTicTacToe(size, winCondition));
+        return new TicTacToeGame(size, new BasicTicTacToe(size, winCondition));
     }
     
+    /**
+     * @return the corresponding int starting from 0
+     */
     private int convertCharToInt(char c) {
-        return (int) c - 64;
+        return (int) (c - 64) - 1;
     }
     
+    /**
+     * @param i int starting from 0
+     * @return corresponding char
+     */
     private char convertIntToChar(int i) {
-        return (char) (i + 64);
+        return (char) (i + 64 + 1);
     }
     
     /**
@@ -67,7 +72,7 @@ public class TicTacToeGame {
         String[][] board = position.getBoard();
         String printedBoard = "   |";
         
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             printedBoard += " " + convertIntToChar(i) + " |"; 
         }
         
@@ -100,7 +105,7 @@ public class TicTacToeGame {
         
         try {
             row = Integer.parseInt(move.substring(0, move.length() - 1)) - 1;
-            col = convertCharToInt(Character.toUpperCase(move.charAt(move.length() - 1))) - 1;
+            col = convertCharToInt(Character.toUpperCase(move.charAt(move.length() - 1)));
         } catch (NumberFormatException e) {
             return false;
         }
@@ -142,6 +147,14 @@ public class TicTacToeGame {
      */
     public Position getPosition() {
         return position;
+    }
+    
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+    
+    public GameType getType() {
+        return type;
     }
 }
 

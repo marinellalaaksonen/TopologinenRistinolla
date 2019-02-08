@@ -1,5 +1,7 @@
 package TicTacToeGames;
 
+import IO.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -54,7 +56,7 @@ public class Position {
         else {
             this.rowOfLatestMove = row;
             this.colOfLatestMove = col;
-            board[row][col] = turn;
+            this.board[row][col] = turn;
             movesLeft--;
             return true;
         }
@@ -78,7 +80,7 @@ public class Position {
     
     /**
      * Generates and returns all valid next positions
-     * @param turn
+     * @param turn X or 0
      * @return all possible next positions
      */
     public Position[] getNextPositions(String turn) {

@@ -8,7 +8,6 @@ package TicTacToeGames;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,10 +21,6 @@ public class BasicTicTacToeTest {
     @Before
     public void setUp() {
         game = TicTacToeGame.createBasicTicTacToe(3, 3);
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -87,21 +82,29 @@ public class BasicTicTacToeTest {
         
         assertEquals(true, biggerGame.won());
     }
-    
-    
 
     /**
      * Test of evaluate method, of class BasicTicTacToe.
      */
-//    @Test
-//    public void testEvaluate() {
-//        System.out.println("evaluate");
-//        BasicTicTacToe instance = null;
-//        int expResult = 0;
-//        int result = instance.evaluate();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void evaluateReturnsIntMaxIfXWon() {
+        BasicTicTacToe basic = new BasicTicTacToe(3, 3);
+        String[][] board = {{"X", "X", "X"}, {"0", null, null}, {"0", null, null}};
+        assertEquals(Integer.MAX_VALUE, basic.evaluate(new Position(board, 2, 0, 5), "X"));
+    }
+    
+    @Test
+    public void evaluateReturnsIntMinIf0Won() {
+        BasicTicTacToe basic = new BasicTicTacToe(3, 3);
+        String[][] board = {{"X", "X", "0"}, {"X", "0", null}, {"0", null, null}};
+        assertEquals(Integer.MIN_VALUE, basic.evaluate(new Position(board, 2, 0, 4), "0"));
+    }
+    
+    @Test
+    public void evaluateReturns0IfTie() {
+        BasicTicTacToe basic = new BasicTicTacToe(3, 3);
+        String[][] board = {{"X", "X", "0"}, {"0", "0", "X"}, {"X", "0", "X"}};
+        assertEquals(0, basic.evaluate(new Position(board, 2, 2, 0), "X"));
+    }
     
 }

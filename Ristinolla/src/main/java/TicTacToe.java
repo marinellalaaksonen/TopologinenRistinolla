@@ -30,7 +30,7 @@ public class TicTacToe {
      * @return size of the game
      */
     private int gameSize() {
-        io.print("Valitse  pelin koko: ");
+        io.print("Valitse pelin koko: ");
         
         try {
             return Integer.parseInt(io.nextLine());
@@ -45,7 +45,7 @@ public class TicTacToe {
      * @return game's win condition
      */
     private int winCondition(int size) {
-        io.print("Valitse  voittoehto: ");
+        io.print("Valitse voittoehto: ");
         
         try {
             int winCondition = Integer.parseInt(io.nextLine());
@@ -61,6 +61,19 @@ public class TicTacToe {
         }
     }
     
+    private Player choosePlayer(String mark) {
+        io.print("Valitse pelaaja " + mark + " I (ihminen) tai T (tekoäly): ");
+        String player = io.nextLine();
+        
+        if (player.toUpperCase().equals("I")) return new HumanPlayer(mark);
+        else if (player.toUpperCase().equals("T")) {
+            return new AI(mark, game.getType());
+        } else {
+            io.print("Virheellinen valinta");
+            return choosePlayer(mark);
+        }
+    }
+    
     /**
      * Makes the preparations needed to start the game
      */
@@ -68,11 +81,12 @@ public class TicTacToe {
         int size = gameSize();
         int winCondition = winCondition(size);
         
-        this.game = new TicTacToeGame(size, winCondition, new BasicTicTacToe(size, winCondition));
-        io.print(game.toString());
+        this.game = TicTacToeGame.createBasicTicTacToe(size, winCondition);
         
-        Player playerX = new HumanPlayer("X");
-        Player player0 = new HumanPlayer("0");
+        Player playerX = choosePlayer("X");
+        Player player0 = choosePlayer("0");
+        
+        io.print(game.toString());
         
         play(playerX, player0);
     }
