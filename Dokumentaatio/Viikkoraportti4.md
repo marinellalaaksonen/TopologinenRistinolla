@@ -1,6 +1,6 @@
 # Viikkoraportti 4
 
-Työhön käytetty aika n 8,5
+Työhön käytetty aika n 8,5 tuntia
 
 **Mitä olen tehnyt tällä viikolla?**  
 Toteuttanut minmaxin/tekoälyvastustajan loppuun sekä lisännyt evaluate-metodille voiton tarkistamisen testit.
@@ -12,7 +12,7 @@ Tekoälyvastustaja valmis, toimii hyvin riittävän pienillä kentillä. Isommil
 Min-maxin/alphabeta-pruningin toteutusta ja debuggausta. Testien tekoa.
 
 **Mikä jäi epäselväksi tai tuottanut vaikeuksia?**  
-AI:n/minmaxin debuggaus osoittautui haastavaksi.
+AI:n/minmaxin debuggaus osoittautui haastavaksi. Seuraavana tehtävänä olevista evaluaten ja AI:n parannuksista myös hieman vielä epäselvää miten tai mihin suuntaan niitä kannattaisi lähteä parantamaan.
 
 Kysymyksiä: Tulisiko tekstikäyttöliittymälle (TicTacToe.java) olla yksikkötestit? Entä pitäisikö Position-luokalla olla omat yksikkötestit? Tällä hetkellä muiden luokkien testit/metodit hyödyntävät myös positionin metodeja, joten jacoco näyttää että myös sen testikattavuus on hyvä, vaikka luokalla ei ole omia yksikkötestejä.
 
