@@ -124,8 +124,7 @@ public class AI implements Player {
         Position currentPosition = game.getPosition();
         Position bestMove;
         
-        // 144 has been tested empirically, if bigger than this at least bigger boards get too slow
-        int depht = (288/currentPosition.getMovesLeft()); 
+        int depht = 80/currentPosition.getMovesLeft() + 18/10; 
 
         if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depht);
         else bestMove = bestMoveForX(currentPosition, depht);
