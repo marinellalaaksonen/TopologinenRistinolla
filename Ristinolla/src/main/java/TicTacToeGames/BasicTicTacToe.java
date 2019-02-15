@@ -91,6 +91,134 @@ public class BasicTicTacToe implements GameType {
             >= winCondition;
     }
     
+    private int howManyPossibleInRow(Position position, int currentRowPos, int currentColPos, 
+            int rowDiff, int colDiff, String turn) {
+        int nextRowPosition = currentRowPos + rowDiff;
+        int nextColPosition = currentColPos + colDiff;
+        
+        if (nextRowPosition < 0 || nextRowPosition >= size
+                || nextColPosition < 0 || nextColPosition >= size) {
+            return 0;
+        } else if (position.getBoard()[nextRowPosition][nextColPosition] != null &&
+                !position.getBoard()[nextRowPosition][nextColPosition].equals(turn)) {
+            return 0;
+        } else {
+            return 1 + howManyPossibleInRow(
+                position, nextRowPosition, nextColPosition, rowDiff, colDiff, turn
+            );
+        }
+    }
+    
+    private boolean areEqual(String boardPos, String mark) {
+        if (boardPos == null) return false;
+        else if (!boardPos.equals(mark)) return false;
+        else return true;
+    }
+    
+    private int countMarksInLine(Position position, int firstRowPos, int firstColPos, 
+            int rowDiff, int colDiff, String turn, int length) {
+        int marks = 0;
+        String[][] board = position.getBoard();
+        
+        if (rowDiff == 0) {
+            for (int i = firstColPos; i < length && i > 0; i += colDiff) {
+                if (areEqual(board[firstRowPos][i], turn)) marks++;
+            }
+        } else if (colDiff == 0) {
+            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
+                if (areEqual(board[i][firstColPos], turn)) marks++;
+            }
+        } else {
+            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
+                for (int j = firstColPos; j < length && j > 0; j += colDiff) {
+                    if (areEqual(board[i][j], turn)) marks++;
+                }
+            }
+        }
+        
+        return marks;
+    }
+    
+    private int checkRow(Position position, int currentRowPos, int currentColPos, 
+            String turn) {
+        int rowLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            -1, 0, turn);
+        int rowRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            1, 0, turn);
+        
+        if (rowLeft + 1 + rowRight < winCondition) return 0;
+        else {
+            return countMarksInLine(position, currentRowPos, currentColPos - rowLeft, 
+                0, 1, turn, rowLeft + 1 + rowRight);
+        }
+    }
+    
+    private int checkCol(Position position, int currentRowPos, int currentColPos, 
+            String turn) {
+        int colDown = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            0, -1, turn);
+        int colUp = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            0, 1, turn);
+        
+        if (colDown + 1 + colUp < winCondition) return 0;
+        else {
+            return countMarksInLine(position, currentRowPos - colUp, currentColPos, 
+                1, 0, turn, colDown + 1 + colUp);
+        }
+    }
+    
+    private int checkDiagonalUp(Position position, int currentRowPos, int currentColPos, 
+            String turn) {
+        int bottomLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            1, -1, turn);
+        int topRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            -1, 1, turn);
+        
+        int lengthOfPossibleRow = bottomLeft + 1 + topRight;
+        
+        if (lengthOfPossibleRow < winCondition) return 0;
+        else {
+            return countMarksInLine(position, currentRowPos + bottomLeft, 
+                currentColPos - bottomLeft, -1, 1, turn, lengthOfPossibleRow);
+        }
+    }
+    
+    private int checkDiagonalDown(Position position, int currentRowPos, int currentColPos, 
+            String turn) {
+        int topLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            -1, -1, turn);
+        int bottomRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
+            1, 1, turn);
+        
+        int lengthOfPossibleRow = topLeft + 1 + bottomRight;
+        
+        if (lengthOfPossibleRow < winCondition) return 0;
+        else {
+            return countMarksInLine(position, currentRowPos - topLeft, 
+                currentColPos - topLeft, 1, 1, turn, lengthOfPossibleRow);
+        }
+    }
+    
+//    private int countPossibleStraights(Position position, int currentRowPos, int currentColPos, 
+//            String turn) {
+//        //int[] possibleDirections = {-1, 1};
+//        int valueOfSpot = 0;
+//        
+//        if ()
+//        
+////        for (int i = 0; i < 2; i++) {
+////            for (int j = 0; j < 2; j++) {
+////                if (howManyPossibleInRow(
+////                            position, currentRowPos, currentColPos, 
+////                            possibleDirections[i], possibleDirections[j], turn
+////                        ) >= winCondition) {
+////                    valueOfSpot += 
+////                }
+////            }
+////        }
+//        
+//    }
+    
     /**
      *
      * @param turn of X or 0
@@ -115,10 +243,10 @@ public class BasicTicTacToe implements GameType {
                     //multiply with 1 if counting X (max), else with -1 (0 is trying to minimize)
                     int multiplyWith = board[i][j].equals("X") ? 1 : -1; 
                     
-                    valueOfGame += multiplyWith * howManyStraightInRow(position, i, j);
-                    valueOfGame += multiplyWith * howManyStraightInCol(position, i, j);
-                    valueOfGame += multiplyWith * howManyStraightDiagonalDown(position, i, j);
-                    valueOfGame += multiplyWith * howManyStraightDiagonalDown(position, i, j);
+                    valueOfGame += multiplyWith * checkRow(position, i, j, turn);
+                    valueOfGame += multiplyWith * checkCol(position, i, j, turn);
+                    valueOfGame += multiplyWith * checkDiagonalDown(position, i, j, turn);
+                    valueOfGame += multiplyWith * checkDiagonalUp(position, i, j, turn);
                 }
             }
         }

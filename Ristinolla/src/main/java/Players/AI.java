@@ -124,7 +124,7 @@ public class AI implements Player {
         Position currentPosition = game.getPosition();
         Position bestMove;
         
-        int depht = 80/currentPosition.getMovesLeft() + 18/10; 
+        int depht = 80/currentPosition.getMovesLeft() + 28/10; 
 
         if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depht);
         else bestMove = bestMoveForX(currentPosition, depht);

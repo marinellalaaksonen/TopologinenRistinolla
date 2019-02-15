@@ -31,10 +31,6 @@ public class AITest {
         this.game = TicTacToeGame.createBasicTicTacToe(3, 3);
         this.io = new ConsoleIO();
     }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of move method, of class AI.
