@@ -8,4 +8,5 @@
 [Viikkoraportti 2](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti2.md)  
 [Viikkoraportti 3](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti3.md)  
 [Viikkoraportti 4](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti4.md)  
-[Viikkoraportti 5](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti5.md)
+[Viikkoraportti 5](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti5.md)  
+[Viikkoraportti 6](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/Viikkoraportti6.md)
