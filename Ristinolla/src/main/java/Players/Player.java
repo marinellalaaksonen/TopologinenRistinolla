@@ -5,8 +5,8 @@
  */
 package Players;
 
+import TicTacToeGame.TicTacToeGame;
 import IO.*;
-import TicTacToeGames.*;
 
 /**
  *

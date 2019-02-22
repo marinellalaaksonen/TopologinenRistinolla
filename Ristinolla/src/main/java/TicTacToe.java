@@ -1,7 +1,7 @@
 
+import TicTacToeGame.TicTacToeGame;
 import IO.*;
 import Players.*;
-import TicTacToeGames.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,7 +33,13 @@ public class TicTacToe {
         io.print("Valitse pelin koko: ");
         
         try {
-            return Integer.parseInt(io.nextLine());
+            int size = Integer.parseInt(io.nextLine());
+            
+            if (size < 3) {
+                io.print("Koon tulee olla vähintään 3");
+                return gameSize();
+            } else return size;
+            
         } catch (NumberFormatException e) {
             io.print("Pelin koon tulee olla numero");
             return gameSize();
@@ -67,10 +73,28 @@ public class TicTacToe {
         
         if (player.toUpperCase().equals("I")) return new HumanPlayer(mark);
         else if (player.toUpperCase().equals("T")) {
-            return new AI(mark, game.getType());
+            return new AI(mark, game.getEvaluator());
         } else {
             io.print("Virheellinen valinta");
             return choosePlayer(mark);
+        }
+    }
+    
+    private void chooseGameType(int size, int winCondition) {
+        io.print("Valitse pelityyppi:\n"
+            + "B = basic\n"
+            + "C = cylinder"
+        );
+        
+        String gameType = io.nextLine().toUpperCase();
+        
+        if (gameType.equals("B")) {
+            this.game = TicTacToeGame.createBasicTicTacToe(size, winCondition);
+        } else if (gameType.equals("C")) {
+            this.game = TicTacToeGame.createCylinderTicTacToe(size, winCondition);
+        } else {
+            io.print("Virheellinen valinta");
+            chooseGameType(size, winCondition);
         }
     }
     
@@ -80,8 +104,7 @@ public class TicTacToe {
     public void start() {
         int size = gameSize();
         int winCondition = winCondition(size);
-        
-        this.game = TicTacToeGame.createBasicTicTacToe(size, winCondition);
+        chooseGameType(size, winCondition);
         
         Player playerX = choosePlayer("X");
         Player player0 = choosePlayer("0");

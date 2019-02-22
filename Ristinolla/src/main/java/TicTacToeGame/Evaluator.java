@@ -3,24 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TicTacToeGames;
+package TicTacToeGame;
+
+import GameTypes.GameType;
 
 /**
  *
  * @author marinella
  */
-public class BasicTicTacToe implements GameType {
-    private int size;
-    private int winCondition;
+public class Evaluator {
+    private final GameType gameType;
+    private final int winCondition;
     
-    /**
-     *
-     * @param size
-     * @param winCondition
-     */
-    public BasicTicTacToe(int size, int winCondition) {
-        this.size = size;
-        this.winCondition = winCondition;
+    public Evaluator(GameType gameType) {
+        this.gameType = gameType;
+        this.winCondition = gameType.getWinCondition();
+    }
+    
+    private boolean isOverEdge(int row, int col) {
+        int size = gameType.getSize();
+        return row < 0 || row >= size || col < 0 || col >= size;
+    }
+    
+    private boolean areEqual(String boardPos, String mark) {
+        if (boardPos == null) return false;
+        else if (!boardPos.equals(mark)) return false;
+        else return true;
     }
     
     /**
@@ -34,49 +42,56 @@ public class BasicTicTacToe implements GameType {
      * @return how many X/0 there are in line to that direction
      */
     private int checkHowManyInRow(Position position, int currentRowPos, int currentColPos, 
-            int rowDiff, int colDiff) {
+            int rowDiff, int colDiff, int maxLength) {
         int nextRowPosition = currentRowPos + rowDiff;
         int nextColPosition = currentColPos + colDiff;
         
-        if (nextRowPosition < 0 || nextRowPosition >= size
-                || nextColPosition < 0 || nextColPosition >= size) {
-            return 0;
-        } else if (position.getBoard()[nextRowPosition][nextColPosition] == null ||
-                !position.getBoard()[nextRowPosition][nextColPosition]
-                .equals(position.getBoard()[currentRowPos][currentColPos])) {
+        if (maxLength == 0) return 0;
+        
+        if (isOverEdge(nextRowPosition, nextColPosition)) {
+            int[] nextRowAndCol = gameType.goOverEdge(nextRowPosition, nextColPosition);
+            
+            if (nextRowAndCol[0] == -1 || nextRowAndCol[1] == -1) return 0;
+            else {
+                nextRowPosition = nextRowAndCol[0];
+                nextColPosition = nextRowAndCol[1];
+            }
+        } 
+        
+        if (!areEqual(position.getBoard()[currentRowPos][currentColPos], 
+                position.getBoard()[nextRowPosition][nextColPosition])) {
             return 0;
         } else {
             return 1 + checkHowManyInRow(
-                position, nextRowPosition, nextColPosition, rowDiff, colDiff
+                position, nextRowPosition, nextColPosition, rowDiff, colDiff, maxLength - 1
             );
         }
     } 
     
     private int howManyStraightInRow(Position position, int row, int col) {
-        return checkHowManyInRow(position, row, col, -1, 0)
-            + checkHowManyInRow(position, row, col, 1, 0) + 1;
+        return checkHowManyInRow(position, row, col, -1, 0, winCondition)
+            + checkHowManyInRow(position, row, col, 1, 0, winCondition) + 1;
     }
     
     private int howManyStraightInCol(Position position, int row, int col) {
-        return checkHowManyInRow(position, row, col, 0, -1)
-            + checkHowManyInRow(position, row, col, 0, 1) + 1;
+        return checkHowManyInRow(position, row, col, 0, -1, winCondition)
+            + checkHowManyInRow(position, row, col, 0, 1, winCondition) + 1;
     }
     
     private int howManyStraightDiagonalDown(Position position, int row, int col) {
-        return checkHowManyInRow(position, row, col, -1, -1)
-            + checkHowManyInRow(position, row, col, 1, 1) + 1;
+        return checkHowManyInRow(position, row, col, -1, -1, winCondition)
+            + checkHowManyInRow(position, row, col, 1, 1, winCondition) + 1;
     }
     
     private int howManyStraightDiagonalUp(Position position, int row, int col) {
-        return checkHowManyInRow(position, row, col, 1, -1)
-            + checkHowManyInRow(position, row, col, -1, 1) + 1;
+        return checkHowManyInRow(position, row, col, 1, -1, winCondition)
+            + checkHowManyInRow(position, row, col, -1, 1, winCondition) + 1;
     }
     
     /**
      * Checks if one side has won, checks only around the latest move
      * @return true if the side that made the last move has won, otherwise false
      */
-    @Override
     public boolean won(Position position) {
         int rowOfLatestMove = position.getRowOfLatestMove();
         int colOfLatestMove = position.getColOfLatestMove();
@@ -91,28 +106,36 @@ public class BasicTicTacToe implements GameType {
             >= winCondition;
     }
     
+    private boolean areEqualOrNull(String boardPos, String mark) {
+        if (boardPos == null) return true;
+        else if (!boardPos.equals(mark)) return false;
+        else return true;
+    }
+    
     private int howManyPossibleInRow(Position position, int currentRowPos, int currentColPos, 
-            int rowDiff, int colDiff, String turn) {
+            int rowDiff, int colDiff, String turn, int maxLength) {
         int nextRowPosition = currentRowPos + rowDiff;
         int nextColPosition = currentColPos + colDiff;
         
-        if (nextRowPosition < 0 || nextRowPosition >= size
-                || nextColPosition < 0 || nextColPosition >= size) {
-            return 0;
-        } else if (position.getBoard()[nextRowPosition][nextColPosition] != null &&
-                !position.getBoard()[nextRowPosition][nextColPosition].equals(turn)) {
+        if (maxLength == 0) return 0;
+        
+        if (isOverEdge(nextRowPosition, nextColPosition)) {
+            int[] nextRowAndCol = gameType.goOverEdge(nextRowPosition, nextColPosition);
+            
+            if (nextRowAndCol[0] == -1 || nextRowAndCol[1] == -1) return 0;
+            else {
+                nextRowPosition = nextRowAndCol[0];
+                nextColPosition = nextRowAndCol[1];
+            }
+        }
+        
+        if (!areEqualOrNull(position.getBoard()[nextRowPosition][nextColPosition], turn)) {
             return 0;
         } else {
             return 1 + howManyPossibleInRow(
-                position, nextRowPosition, nextColPosition, rowDiff, colDiff, turn
+                position, nextRowPosition, nextColPosition, rowDiff, colDiff, turn, maxLength - 1
             );
         }
-    }
-    
-    private boolean areEqual(String boardPos, String mark) {
-        if (boardPos == null) return false;
-        else if (!boardPos.equals(mark)) return false;
-        else return true;
     }
     
     private int countMarksInLine(Position position, int firstRowPos, int firstColPos, 
@@ -140,41 +163,42 @@ public class BasicTicTacToe implements GameType {
     }
     
     private int checkRow(Position position, int currentRowPos, int currentColPos, 
-            String turn) {
+            String turn, int size) {
         int rowLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            -1, 0, turn);
+            -1, 0, turn, size);
         int rowRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            1, 0, turn);
+            1, 0, turn, size);
+        int lengthOfPossibleRow = Math.min(rowLeft + 1 + rowRight, size);
         
-        if (rowLeft + 1 + rowRight < winCondition) return 0;
+        if (lengthOfPossibleRow < winCondition) return 0;
         else {
             return countMarksInLine(position, currentRowPos, currentColPos - rowLeft, 
-                0, 1, turn, rowLeft + 1 + rowRight);
+                0, 1, turn, lengthOfPossibleRow);
         }
     }
     
     private int checkCol(Position position, int currentRowPos, int currentColPos, 
-            String turn) {
+            String turn, int size) {
         int colDown = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            0, -1, turn);
+            0, -1, turn, size);
         int colUp = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            0, 1, turn);
+            0, 1, turn, size);
+        int lengthOfPossibleRow = Math.min(colDown + 1 + colUp, size);
         
-        if (colDown + 1 + colUp < winCondition) return 0;
+        if (lengthOfPossibleRow < winCondition) return 0;
         else {
             return countMarksInLine(position, currentRowPos - colUp, currentColPos, 
-                1, 0, turn, colDown + 1 + colUp);
+                1, 0, turn, lengthOfPossibleRow);
         }
     }
     
     private int checkDiagonalUp(Position position, int currentRowPos, int currentColPos, 
-            String turn) {
+            String turn, int size) {
         int bottomLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            1, -1, turn);
+            1, -1, turn, size);
         int topRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            -1, 1, turn);
-        
-        int lengthOfPossibleRow = bottomLeft + 1 + topRight;
+            -1, 1, turn, size);
+        int lengthOfPossibleRow = Math.min(bottomLeft + 1 + topRight, size);
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
@@ -184,13 +208,12 @@ public class BasicTicTacToe implements GameType {
     }
     
     private int checkDiagonalDown(Position position, int currentRowPos, int currentColPos, 
-            String turn) {
+            String turn, int size) {
         int topLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            -1, -1, turn);
+            -1, -1, turn, size);
         int bottomRight = howManyPossibleInRow(position, currentRowPos, currentColPos, 
-            1, 1, turn);
-        
-        int lengthOfPossibleRow = topLeft + 1 + bottomRight;
+            1, 1, turn, size);
+        int lengthOfPossibleRow = Math.min(topLeft + 1 + bottomRight, size);
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
@@ -205,7 +228,6 @@ public class BasicTicTacToe implements GameType {
      * @return estimated value of the game in the position given 
      * or value of the game if finished
      */
-    @Override
     public int evaluate(Position position, String turn, int depthLeft) {
         if (won(position)) {
             return (int) (turn.equals("X") ? (1E9 + depthLeft) : (-1E9 - depthLeft));
@@ -215,6 +237,7 @@ public class BasicTicTacToe implements GameType {
         
         String[][] board = position.getBoard();
         int valueOfGame = 0;
+        int size = this.gameType.getSize();
         
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -223,10 +246,10 @@ public class BasicTicTacToe implements GameType {
                     //multiply with 1 if counting X (max), else with -1 (0 is trying to minimize)
                     int multiplyWith = board[i][j].equals("X") ? 1 : -1; 
                     
-                    valueOfGame += multiplyWith * checkRow(position, i, j, turn);
-                    valueOfGame += multiplyWith * checkCol(position, i, j, turn);
-                    valueOfGame += multiplyWith * checkDiagonalDown(position, i, j, turn);
-                    valueOfGame += multiplyWith * checkDiagonalUp(position, i, j, turn);
+                    valueOfGame += multiplyWith * checkRow(position, i, j, turn, size);
+                    valueOfGame += multiplyWith * checkCol(position, i, j, turn, size);
+                    valueOfGame += multiplyWith * checkDiagonalDown(position, i, j, turn, size);
+                    valueOfGame += multiplyWith * checkDiagonalUp(position, i, j, turn, size);
                 }
             }
         }

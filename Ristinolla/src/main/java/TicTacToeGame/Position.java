@@ -1,4 +1,4 @@
-package TicTacToeGames;
+package TicTacToeGame;
 
 import IO.*;
 
@@ -26,7 +26,7 @@ public class Position {
      * @param rowOfLatestMove
      * @param movesLeft
      */
-    public Position(String[][] board, int colOfLatestMove, int rowOfLatestMove, int movesLeft) {
+    public Position(String[][] board, int rowOfLatestMove, int colOfLatestMove, int movesLeft) {
         this.board = board;
         this.colOfLatestMove = colOfLatestMove;
         this.rowOfLatestMove = rowOfLatestMove;
@@ -73,8 +73,8 @@ public class Position {
         }
         
         return new Position(
-            clonedBoard, position.getColOfLatestMove(),
-            position.getRowOfLatestMove(), position.getMovesLeft()
+            clonedBoard, position.getRowOfLatestMove(),
+            position.getColOfLatestMove(), position.getMovesLeft()
         );
     }
     

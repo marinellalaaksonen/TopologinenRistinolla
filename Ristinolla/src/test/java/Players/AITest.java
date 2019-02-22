@@ -5,8 +5,11 @@
  */
 package Players;
 
+import TicTacToeGame.Position;
+import TicTacToeGame.TicTacToeGame;
+import GameTypes.BasicTicTacToe;
+import TicTacToeGame.Evaluator;
 import IO.*;
-import TicTacToeGames.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,8 +29,8 @@ public class AITest {
     
     @Before
     public void setUp() {
-        this.aiX = new AI("X", new BasicTicTacToe(3, 3));
-        this.ai0 = new AI("0", new BasicTicTacToe(3, 3));
+        this.aiX = new AI("X", new Evaluator(new BasicTicTacToe(3, 3)));
+        this.ai0 = new AI("0", new Evaluator(new BasicTicTacToe(3, 3)));
         this.game = TicTacToeGame.createBasicTicTacToe(3, 3);
         this.io = new ConsoleIO();
     }
@@ -38,14 +41,14 @@ public class AITest {
     @Test
     public void moveWorksWhenXWinsWithNextMove() {
         String[][] board = {{"X", "X", null}, {null, "0", null}, {"0", null, null}};
-        game.setPosition(new Position(board, 1, 0, 5));
+        game.setPosition(new Position(board, 0, 1, 5));
         assertEquals("1C", aiX.move(io, game));
     }
     
     @Test
     public void moveWorksWhen0WinsWithNextMove() {
         String[][] board = {{null, "X", "X"}, {"0", null, "X"}, {"0", null, null}};
-        game.setPosition(new Position(board, 1, 0, 4));
+        game.setPosition(new Position(board, 0, 1, 4));
         assertEquals("1A", ai0.move(io, game));
     }
     

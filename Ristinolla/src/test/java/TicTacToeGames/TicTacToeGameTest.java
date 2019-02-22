@@ -5,6 +5,7 @@
  */
 package TicTacToeGames;
 
+import TicTacToeGame.TicTacToeGame;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

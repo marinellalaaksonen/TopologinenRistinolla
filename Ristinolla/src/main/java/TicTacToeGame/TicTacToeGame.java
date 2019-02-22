@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TicTacToeGames;
+package TicTacToeGame;
+
+import GameTypes.*;
 
 /**
  *
@@ -12,7 +14,7 @@ package TicTacToeGames;
 public class TicTacToeGame {
     private final int size;
     private Position position;
-    private final GameType type;
+    private final Evaluator evaluator;
     
     /**
      * Constructor
@@ -20,10 +22,10 @@ public class TicTacToeGame {
      * @param winCondition, how many noughts/crosses in line are needed to win
      * @param type basic or other
      */
-    public TicTacToeGame(int size, GameType type) {
+    public TicTacToeGame(int size, Evaluator evaluator) {
         this.size = size;
-        this.position = new Position(new String[size][size], -1, -1, size * size);
-        this.type = type;
+        this.position = new Position(new String[size][size], 0, 0, size * size);
+        this.evaluator = evaluator;
     }
     
     /**
@@ -33,7 +35,17 @@ public class TicTacToeGame {
      * @return new tictactoe with basic
      */
     public static TicTacToeGame createBasicTicTacToe(int size, int winCondition) {
-        return new TicTacToeGame(size, new BasicTicTacToe(size, winCondition));
+        return new TicTacToeGame(size, new Evaluator(new BasicTicTacToe(size, winCondition)));
+    }
+    
+    /**
+     *
+     * @param size
+     * @param winCondition
+     * @return new tictactoe with basic
+     */
+    public static TicTacToeGame createCylinderTicTacToe(int size, int winCondition) {
+        return new TicTacToeGame(size, new Evaluator(new CylinderTicTacToe(size, winCondition)));
     }
     
     /**
@@ -103,6 +115,8 @@ public class TicTacToeGame {
         int row;
         int col;
         
+        if (move.length() == 0) return false;
+        
         try {
             row = Integer.parseInt(move.substring(0, move.length() - 1)) - 1;
             col = convertCharToInt(Character.toUpperCase(move.charAt(move.length() - 1)));
@@ -130,7 +144,7 @@ public class TicTacToeGame {
      * @return true if the player in turn has won
      */
     public boolean won() {
-        return type.won(position);
+        return evaluator.won(position);
     }
     
     /**
@@ -153,8 +167,8 @@ public class TicTacToeGame {
         this.position = position;
     }
     
-    public GameType getType() {
-        return type;
+    public Evaluator getEvaluator() {
+        return evaluator;
     }
 }
 

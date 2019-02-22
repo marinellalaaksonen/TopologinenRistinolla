@@ -5,8 +5,10 @@
  */
 package Players;
 
+import TicTacToeGame.TicTacToeGame;
+import TicTacToeGame.Position;
+import TicTacToeGame.Evaluator;
 import IO.IO;
-import TicTacToeGames.*;
 
 /**
  *
@@ -14,23 +16,23 @@ import TicTacToeGames.*;
  */
 public class AI implements Player {
     private String mark;
-    private GameType gameType;
+    private Evaluator evaluator;
     
     /**
      * @param mark if the player is palying with X or 0
      * @param gameType basic or other
      */
-    public AI(String mark, GameType gameType) {
+    public AI(String mark, Evaluator evaluator) {
         this.mark = mark;
-        this.gameType = gameType;
+        this.evaluator = evaluator;
     }
     
     /**
      * 0's turn, tries to minimize the value of the game from the position given
      */
     private int minNode(Position position, int depth, int alpha, int beta) {
-        if (position.getMovesLeft() <= 0 || depth == 0 || gameType.won(position)) {
-            int valueOfGame = gameType.evaluate(position, "X", depth);
+        if (position.getMovesLeft() <= 0 || depth == 0 || evaluator.won(position)) {
+            int valueOfGame = evaluator.evaluate(position, "X", depth);
             if (valueOfGame == Integer.MAX_VALUE) return valueOfGame - depth;
             else return valueOfGame;
         }
@@ -54,8 +56,8 @@ public class AI implements Player {
      * X's turn, tries to maximize the value of the game from the position given
      */
     private int maxNode(Position position, int depth, int alpha, int beta) {
-        if (position.getMovesLeft() <= 0 || depth == 0 || gameType.won(position)) {
-            int valueOfGame = gameType.evaluate(position, "0", depth);
+        if (position.getMovesLeft() <= 0 || depth == 0 || evaluator.won(position)) {
+            int valueOfGame = evaluator.evaluate(position, "0", depth);
             if (valueOfGame == Integer.MIN_VALUE) return valueOfGame - depth;
             else return valueOfGame;
         }
