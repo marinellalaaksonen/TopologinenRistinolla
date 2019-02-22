@@ -16,7 +16,7 @@ public interface GameType {
      * @param turn of X or 0
      * @return estimated value of the game in the position given
      */
-    int evaluate(Position position, String turn);
+    int evaluate(Position position, String turn, int depthLeft);
 
     /**
      * Checks if one side has won, checks only around the latest move

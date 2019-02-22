@@ -199,26 +199,6 @@ public class BasicTicTacToe implements GameType {
         }
     }
     
-//    private int countPossibleStraights(Position position, int currentRowPos, int currentColPos, 
-//            String turn) {
-//        //int[] possibleDirections = {-1, 1};
-//        int valueOfSpot = 0;
-//        
-//        if ()
-//        
-////        for (int i = 0; i < 2; i++) {
-////            for (int j = 0; j < 2; j++) {
-////                if (howManyPossibleInRow(
-////                            position, currentRowPos, currentColPos, 
-////                            possibleDirections[i], possibleDirections[j], turn
-////                        ) >= winCondition) {
-////                    valueOfSpot += 
-////                }
-////            }
-////        }
-//        
-//    }
-    
     /**
      *
      * @param turn of X or 0
@@ -226,9 +206,9 @@ public class BasicTicTacToe implements GameType {
      * or value of the game if finished
      */
     @Override
-    public int evaluate(Position position, String turn) {
+    public int evaluate(Position position, String turn, int depthLeft) {
         if (won(position)) {
-            return turn.equals("X") ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            return (int) (turn.equals("X") ? (1E9 + depthLeft) : (-1E9 - depthLeft));
         } else if (position.getMovesLeft() == 0) {
             return 0;
         }

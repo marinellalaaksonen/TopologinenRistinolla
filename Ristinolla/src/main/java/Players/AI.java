@@ -28,16 +28,18 @@ public class AI implements Player {
     /**
      * 0's turn, tries to minimize the value of the game from the position given
      */
-    private int minNode(Position position, int depht, int alpha, int beta) {
-        if (position.getMovesLeft() <= 0 || depht == 0 || gameType.won(position)) {
-            return gameType.evaluate(position, "X");
+    private int minNode(Position position, int depth, int alpha, int beta) {
+        if (position.getMovesLeft() <= 0 || depth == 0 || gameType.won(position)) {
+            int valueOfGame = gameType.evaluate(position, "X", depth);
+            if (valueOfGame == Integer.MAX_VALUE) return valueOfGame - depth;
+            else return valueOfGame;
         }
         
         int value = Integer.MAX_VALUE;
         Position[] nextPositions = position.getNextPositions("0");
 
         for (int i = 0; i < nextPositions.length; i++) {
-            int max = maxNode(nextPositions[i], depht - 1, alpha, beta);
+            int max = maxNode(nextPositions[i], depth - 1, alpha, beta);
             if (value > max) {
                 value = max;
             }
@@ -51,16 +53,18 @@ public class AI implements Player {
     /**
      * X's turn, tries to maximize the value of the game from the position given
      */
-    private int maxNode(Position position, int depht, int alpha, int beta) {
-        if (position.getMovesLeft() <= 0 || depht == 0 || gameType.won(position)) {
-            return gameType.evaluate(position, "0");
+    private int maxNode(Position position, int depth, int alpha, int beta) {
+        if (position.getMovesLeft() <= 0 || depth == 0 || gameType.won(position)) {
+            int valueOfGame = gameType.evaluate(position, "0", depth);
+            if (valueOfGame == Integer.MIN_VALUE) return valueOfGame - depth;
+            else return valueOfGame;
         }
         
         int value = Integer.MIN_VALUE;
         Position[] nextPositions = position.getNextPositions("X");
 
         for (int i = 0; i < nextPositions.length; i++) {
-            int min = minNode(nextPositions[i], depht - 1, alpha, beta);
+            int min = minNode(nextPositions[i], depth - 1, alpha, beta);
             if (value < min) {
                 value = min;
             }
@@ -71,13 +75,13 @@ public class AI implements Player {
         return value;
     }
     
-    private Position bestMoveFor0(Position currentPosition, int depht) {
+    private Position bestMoveFor0(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
         int value = Integer.MAX_VALUE;
             
         for (int i = 0; i < nextPositions.length; i++) {
-            int min = maxNode(nextPositions[i], depht, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int min = maxNode(nextPositions[i], depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             if (min < value) {
                 value = min;
@@ -88,13 +92,13 @@ public class AI implements Player {
         return bestMove;
     }
     
-    private Position bestMoveForX(Position currentPosition, int depht) {
+    private Position bestMoveForX(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
         int value = Integer.MIN_VALUE;
             
         for (int i = 0; i < nextPositions.length; i++) {
-            int max = minNode(nextPositions[i], depht, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int max = minNode(nextPositions[i], depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             if (max > value) {
                 value = max;
@@ -124,10 +128,10 @@ public class AI implements Player {
         Position currentPosition = game.getPosition();
         Position bestMove;
         
-        int depht = 80/currentPosition.getMovesLeft() + 28/10; 
+        int depth = 80/currentPosition.getMovesLeft() + 28/10; 
 
-        if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depht);
-        else bestMove = bestMoveForX(currentPosition, depht);
+        if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depth);
+        else bestMove = bestMoveForX(currentPosition, depth);
         
         String move = "" + (bestMove.getRowOfLatestMove() + 1) 
             + convertIntToChar(bestMove.getColOfLatestMove());

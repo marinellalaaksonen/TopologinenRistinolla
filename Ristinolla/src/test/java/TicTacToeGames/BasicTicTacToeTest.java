@@ -87,24 +87,38 @@ public class BasicTicTacToeTest {
      * Test of evaluate method, of class BasicTicTacToe.
      */
     @Test
-    public void evaluateReturnsIntMaxIfXWon() {
+    public void evaluateReturnsRightIfXWonWithNoDepthLeft() {
         BasicTicTacToe basic = new BasicTicTacToe(3, 3);
         String[][] board = {{"X", "X", "X"}, {"0", null, null}, {"0", null, null}};
-        assertEquals(Integer.MAX_VALUE, basic.evaluate(new Position(board, 2, 0, 5), "X"));
+        assertEquals((int) 1E9, basic.evaluate(new Position(board, 2, 0, 5), "X", 0));
     }
     
     @Test
-    public void evaluateReturnsIntMinIf0Won() {
+    public void evaluateReturnsRightIfXWonWithDepthLeft() {
+        BasicTicTacToe basic = new BasicTicTacToe(3, 3);
+        String[][] board = {{"X", "X", "X"}, {"0", null, null}, {"0", null, null}};
+        assertEquals((int) 1E9 + 3, basic.evaluate(new Position(board, 2, 0, 5), "X", 3));
+    }
+    
+    @Test
+    public void evaluateReturnsRightIf0WonWithNoDepthLeft() {
         BasicTicTacToe basic = new BasicTicTacToe(3, 3);
         String[][] board = {{"X", "X", "0"}, {"X", "0", null}, {"0", null, null}};
-        assertEquals(Integer.MIN_VALUE, basic.evaluate(new Position(board, 2, 0, 4), "0"));
+        assertEquals((int) -1E9, basic.evaluate(new Position(board, 2, 0, 4), "0", 0));
+    }
+    
+    @Test
+    public void evaluateReturnsRightIf0WonWithDepthLeft() {
+        BasicTicTacToe basic = new BasicTicTacToe(3, 3);
+        String[][] board = {{"X", "X", "0"}, {"X", "0", null}, {"0", null, null}};
+        assertEquals((int) -1E9 - 5, basic.evaluate(new Position(board, 2, 0, 4), "0", 5));
     }
     
     @Test
     public void evaluateReturns0IfTie() {
         BasicTicTacToe basic = new BasicTicTacToe(3, 3);
         String[][] board = {{"X", "X", "0"}, {"0", "0", "X"}, {"X", "0", "X"}};
-        assertEquals(0, basic.evaluate(new Position(board, 2, 2, 0), "X"));
+        assertEquals(0, basic.evaluate(new Position(board, 2, 2, 0), "X", 0));
     }
     
 }
