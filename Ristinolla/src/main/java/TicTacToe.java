@@ -83,7 +83,8 @@ public class TicTacToe {
     private void chooseGameType(int size, int winCondition) {
         io.print("Valitse pelityyppi:\n"
             + "B = basic\n"
-            + "C = cylinder"
+            + "C = cylinder\n"
+            + "M = Möbius strip"
         );
         
         String gameType = io.nextLine().toUpperCase();
@@ -92,6 +93,8 @@ public class TicTacToe {
             this.game = TicTacToeGame.createBasicTicTacToe(size, winCondition);
         } else if (gameType.equals("C")) {
             this.game = TicTacToeGame.createCylinderTicTacToe(size, winCondition);
+        } else if (gameType.equals("M")) {
+            this.game = TicTacToeGame.createMobiusStripTicTacToe(size, winCondition);
         } else {
             io.print("Virheellinen valinta");
             chooseGameType(size, winCondition);

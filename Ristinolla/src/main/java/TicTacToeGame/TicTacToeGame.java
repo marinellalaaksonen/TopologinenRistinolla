@@ -42,10 +42,20 @@ public class TicTacToeGame {
      *
      * @param size
      * @param winCondition
-     * @return new tictactoe with basic
+     * @return new cylinderTicTacToe
      */
     public static TicTacToeGame createCylinderTicTacToe(int size, int winCondition) {
         return new TicTacToeGame(size, new Evaluator(new CylinderTicTacToe(size, winCondition)));
+    }
+    
+    /**
+     *
+     * @param size
+     * @param winCondition
+     * @return new MöbiusStripTicTacToe
+     */
+    public static TicTacToeGame createMobiusStripTicTacToe(int size, int winCondition) {
+        return new TicTacToeGame(size, new Evaluator(new MobiusStripTicTacToe(size, winCondition)));
     }
     
     /**
