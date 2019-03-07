@@ -18,6 +18,7 @@ public class Position {
     private int rowOfLatestMove;
     private final int size;
     private int movesLeft;
+    private int amountOfChildren;
     
     /**
      * 
@@ -32,6 +33,7 @@ public class Position {
         this.rowOfLatestMove = rowOfLatestMove;
         this.size = board.length;
         this.movesLeft = movesLeft;
+        this.amountOfChildren = 50;
     }
     
     /**
@@ -84,20 +86,30 @@ public class Position {
      * @return all possible next positions
      */
     public Position[] getNextPositions(String turn) {
-        Position[] nextPositions = new Position[movesLeft];
+        Position[] nextPositions = new Position[amountOfChildren];
         int count = 0;
+        int distance = 1;
         
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (isValidMove(i, j)) {
-                    Position clonedPosition = clonePosition(this);
-                    clonedPosition.makeMove(i, j, turn);
-                    
-                    nextPositions[count] = clonedPosition;
-                    count++;
+        while (count < amountOfChildren) {
+            
+            for (int i = Math.max(0, rowOfLatestMove - distance); i < Math.min(size, rowOfLatestMove + distance); i++) {
+                for (int j = Math.max(0, colOfLatestMove - distance); j < Math.min(size, colOfLatestMove + distance); j++) {
+                    if (isValidMove(i, j)) {
+                        Position clonedPosition = clonePosition(this);
+                        clonedPosition.makeMove(i, j, turn);
+
+                        nextPositions[count] = clonedPosition;
+                        count++;
+                        
+                        if (count >= amountOfChildren) return nextPositions;
+                    }
                 }
             }
+            
+            distance++;
         }
+        
+        
         
         return nextPositions;
     }
@@ -140,5 +152,9 @@ public class Position {
      */
     public void setMovesLeft(int movesLeft) {
         this.movesLeft = movesLeft;
+    }
+    
+    public int getAmountOfChildren() {
+        return amountOfChildren;
     }
 }

@@ -39,14 +39,16 @@ public class AI implements Player {
         
         int value = Integer.MAX_VALUE;
         Position[] nextPositions = position.getNextPositions("0");
+        int next = 0;
 
-        for (int i = 0; i < nextPositions.length; i++) {
-            int max = maxNode(nextPositions[i], depth - 1, alpha, beta);
+        while (next < position.getAmountOfChildren() && nextPositions[next] != null) {
+            int max = maxNode(nextPositions[next], depth - 1, alpha, beta);
             if (value > max) {
                 value = max;
             }
             beta = Math.min(value, beta);
             if (alpha >= beta) return value;
+            next++;
         }
         
         return value;
@@ -64,14 +66,16 @@ public class AI implements Player {
         
         int value = Integer.MIN_VALUE;
         Position[] nextPositions = position.getNextPositions("X");
+        int next = 0;
 
-        for (int i = 0; i < nextPositions.length; i++) {
-            int min = minNode(nextPositions[i], depth - 1, alpha, beta);
+        while (next < position.getAmountOfChildren() && nextPositions[next] != null) {
+            int min = minNode(nextPositions[next], depth - 1, alpha, beta);
             if (value < min) {
                 value = min;
             }
             alpha = Math.max(value, alpha);
             if (alpha >= beta) return value;
+            next++;
         }
         
         return value;
@@ -130,7 +134,7 @@ public class AI implements Player {
         Position currentPosition = game.getPosition();
         Position bestMove;
         
-        int depth = 80/currentPosition.getMovesLeft() + 28/10; 
+        int depth = 3; // 80/currentPosition.getMovesLeft() + 28/10
 
         if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depth);
         else bestMove = bestMoveForX(currentPosition, depth);
