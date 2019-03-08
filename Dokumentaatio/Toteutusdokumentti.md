@@ -3,9 +3,9 @@
 
 ## Ohjelman yleisrakenne
 
-Ohjelman rakenne koostuu teksitikäyttöliittymästä (TicTacToe.java), pelin logiikan toteuttavista luokista (kansio TicTacToeGames), eri pelityypeistä (kansio GameTypes) ja pelaajien toiminnallisuuden toteuttavista luokista (kansio Players). Tekstikäyttöliittymä luo halutunlaisen pelin, eli olion TicTacToeGame, jolla on riippuvuus Evaluatoriin. Evaluator hyödyntää pelityyppikohtaisissa siirroissa (laudan reunojen yli menemiset) GameType-rajapinnan toteuttavien pelin tyyppi-luokkien avulla. Peliin liittyy aina myös sen hetkinen pelitilanne Position. Tekstikäyttöliittymä luo myös kummallekin pelaajalle omat Player-rajapinnan toteuttavat oliot (HumanPlayer tai AI), jotka huolehtivat siirtojen teosta.
+![UML](https://github.com/marinellalaaksonen/TopologinenRistinolla/blob/master/Dokumentaatio/4e79ba92.png)
 
-todo: UML-kaavio
+Ohjelman rakenne koostuu teksitikäyttöliittymästä (TicTacToe.java), pelin logiikan toteuttavista luokista (kansio TicTacToeGames), eri pelityypeistä (kansio GameTypes) ja pelaajien toiminnallisuuden toteuttavista luokista (kansio Players). Tekstikäyttöliittymä luo halutunlaisen pelin, eli olion TicTacToeGame, jolla on riippuvuus Evaluatoriin. Evaluator hyödyntää pelityyppikohtaisissa siirroissa (laudan reunojen yli menemiset) GameType-rajapinnan toteuttavien pelin tyyppi-luokkien avulla. Peliin liittyy aina myös sen hetkinen pelitilanne Position. Tekstikäyttöliittymä luo myös kummallekin pelaajalle omat Player-rajapinnan toteuttavat oliot (HumanPlayer tai AI), jotka huolehtivat siirtojen teosta.
 
 
 ## Suorituskyky
@@ -26,9 +26,4 @@ Minmaxin jokaisella solmulla on lapsensa (n - tehdyt siirrot) listana, jolloin j
 
 AI-vastustajaa vastaan pystyy tällä hetkellä pelaamaan pahinta aikavaativuutta pelaamalla oikeaan alanurkkaan. Tämä hidastaa varsinkin hitaamman AI-vastustajan suoriutumista merkittävästi. Tätä voisi korjata aloittamalla lasten luonti olemassa olevien pelisiirtojen läheltä (esimerkiksi viimeisimmä siirron ympäriltä, mikä mahdollistaisi myös isomman pelialueen kuin 12x12 käytön jos myös lasten määrää samalla rajoitettaisiin.
 
-Evaluate-metodin voisi muuttaa suosimaan siirtoja, joissa suoran molemmat päät ovat vapaat ja mahdollisesti huomioimaan myös blokit suoraan eikä ainoastaan välillisesti (estämällä voitot). Mahdollisesti myös suosimaan tasapeliä häviämisen sijaan tai depht:n laittamista osaksi evaluate-arvoa?
-
-Voitaisiin myös nopeuttaa selvästi pitämällä kirjaa jo kohdatuista tilanteista?
-
-
-## Lähteet
+Evaluate-metodin voisi muuttaa suosimaan siirtoja, joissa suoran molemmat päät ovat vapaat ja mahdollisesti huomioimaan myös blokit suoraan eikä ainoastaan välillisesti (estämällä voitot). Parannusta voisi tuoda mahdollisesti myös depht:n laittaminen osaksi evaluate-arvoa.
