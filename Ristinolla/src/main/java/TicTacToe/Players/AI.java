@@ -11,7 +11,7 @@ import TicTacToe.TicTacToeGame.Evaluator;
 import TicTacToe.IO.IO;
 
 /**
- *
+ * 
  * @author marinella
  */
 public class AI implements Player {
@@ -30,25 +30,23 @@ public class AI implements Player {
     /**
      * 0's turn, tries to minimize the value of the game from the position given
      */
-    private int minNode(Position position, int depth, int alpha, int beta) {
+    private int minNode(Position position, int depth, int alpha, int beta, int valueOfGame) {
+        valueOfGame += evaluator.evaluate(position, "X", depth);
+        
         if (position.getMovesLeft() <= 0 || depth == 0 || evaluator.won(position)) {
-            int valueOfGame = evaluator.evaluate(position, "X", depth);
-            if (valueOfGame == Integer.MAX_VALUE) return valueOfGame - depth;
-            else return valueOfGame;
+            return valueOfGame;
         }
         
         int value = Integer.MAX_VALUE;
         Position[] nextPositions = position.getNextPositions("0");
-        int next = 0;
 
-        while (next < position.getAmountOfChildren() && nextPositions[next] != null) {
-            int max = maxNode(nextPositions[next], depth - 1, alpha, beta);
-            if (value > max) {
-                value = max;
+        for (int i = 0; i < nextPositions.length; i++) {
+            int min = maxNode(nextPositions[i], depth - 1, alpha, beta, valueOfGame);
+            if (min < value) {
+                value = min;
             }
             beta = Math.min(value, beta);
             if (alpha >= beta) return value;
-            next++;
         }
         
         return value;
@@ -57,25 +55,23 @@ public class AI implements Player {
     /**
      * X's turn, tries to maximize the value of the game from the position given
      */
-    private int maxNode(Position position, int depth, int alpha, int beta) {
+    private int maxNode(Position position, int depth, int alpha, int beta, int valueOfGame) {
+        valueOfGame = evaluator.evaluate(position, "0", depth);
+        
         if (position.getMovesLeft() <= 0 || depth == 0 || evaluator.won(position)) {
-            int valueOfGame = evaluator.evaluate(position, "0", depth);
-            if (valueOfGame == Integer.MIN_VALUE) return valueOfGame - depth;
-            else return valueOfGame;
+            return valueOfGame;
         }
         
         int value = Integer.MIN_VALUE;
         Position[] nextPositions = position.getNextPositions("X");
-        int next = 0;
 
-        while (next < position.getAmountOfChildren() && nextPositions[next] != null) {
-            int min = minNode(nextPositions[next], depth - 1, alpha, beta);
-            if (value < min) {
-                value = min;
+        for (int i = 0; i < nextPositions.length; i++) {
+            int max = minNode(nextPositions[i], depth - 1, alpha, beta, valueOfGame);
+            if (max > value) {
+                value = max;
             }
             alpha = Math.max(value, alpha);
             if (alpha >= beta) return value;
-            next++;
         }
         
         return value;
@@ -85,14 +81,18 @@ public class AI implements Player {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
         int value = Integer.MAX_VALUE;
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
             
         for (int i = 0; i < nextPositions.length; i++) {
-            int min = maxNode(nextPositions[i], depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int min = maxNode(nextPositions[i], depth, alpha, beta, 0);
 
             if (min < value) {
                 value = min;
                 bestMove = nextPositions[i];
             }
+            
+            beta = Math.min(value, beta);
         }
         
         return bestMove;
@@ -101,15 +101,18 @@ public class AI implements Player {
     private Position bestMoveForX(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
-        int value = Integer.MIN_VALUE;
+        int value = Integer.MIN_VALUE;int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
             
         for (int i = 0; i < nextPositions.length; i++) {
-            int max = minNode(nextPositions[i], depth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int max = minNode(nextPositions[i], depth, alpha, beta, 0);
 
             if (max > value) {
                 value = max;
                 bestMove = nextPositions[i];
             }
+            
+            alpha = Math.max(value, alpha);
         }
         
         return bestMove;
@@ -134,15 +137,21 @@ public class AI implements Player {
         Position currentPosition = game.getPosition();
         Position bestMove;
         
-        int depth = 3; // 80/currentPosition.getMovesLeft() + 28/10
+        int depth = 80/currentPosition.getMovesLeft() + 38/10; 
+
+        long startTime = System.currentTimeMillis();
 
         if (mark.equals("0")) bestMove = bestMoveFor0(currentPosition, depth);
         else bestMove = bestMoveForX(currentPosition, depth);
+
+        long endTime = System.currentTimeMillis();
+        
         
         String move = "" + (bestMove.getRowOfLatestMove() + 1) 
             + convertIntToChar(bestMove.getColOfLatestMove());
         
-        io.print("Tekoäly teki siirron " + move);
+        io.print("Tekoäly teki siirron " + move + ", siirto kesti "
+            + (endTime - startTime) + " ms");
         
         return move;
     }

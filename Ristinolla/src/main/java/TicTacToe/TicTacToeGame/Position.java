@@ -33,7 +33,7 @@ public class Position {
         this.rowOfLatestMove = rowOfLatestMove;
         this.size = board.length;
         this.movesLeft = movesLeft;
-        this.amountOfChildren = 50;
+        this.amountOfChildren = 144;
     }
     
     /**
@@ -80,34 +80,70 @@ public class Position {
         );
     }
     
+    private boolean tryMove(int row, int col, String turn, Position[] nextPositions, int count) {
+        if (isValidMove(row, col)) {
+            Position clonedPosition = clonePosition(this);
+            clonedPosition.makeMove(row, col, turn);
+
+            nextPositions[count] = clonedPosition;
+            
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean isOverEdge(int position) {
+        return position < 0 || position >= size;
+    }
+    
     /**
      * Generates and returns all valid next positions
      * @param turn X or 0
      * @return all possible next positions
      */
     public Position[] getNextPositions(String turn) {
-        Position[] nextPositions = new Position[amountOfChildren];
+        int children = movesLeft;//Math.min(movesLeft, amountOfChildren);
+        Position[] nextPositions = new Position[children];
         int count = 0;
         int distance = 1;
         
-        while (count < amountOfChildren) {
-            
-            for (int i = Math.max(0, rowOfLatestMove - distance); i < Math.min(size, rowOfLatestMove + distance); i++) {
-                for (int j = Math.max(0, colOfLatestMove - distance); j < Math.min(size, colOfLatestMove + distance); j++) {
-                    if (isValidMove(i, j)) {
-                        Position clonedPosition = clonePosition(this);
-                        clonedPosition.makeMove(i, j, turn);
-
-                        nextPositions[count] = clonedPosition;
-                        count++;
-                        
-                        if (count >= amountOfChildren) return nextPositions;
-                    }
-                }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tryMove(i, j, turn, nextPositions, count)) count++;
             }
-            
-            distance++;
         }
+        
+//        while (count < children) {
+//            if(!isOverEdge(rowOfLatestMove - distance)) {
+//                for (int i = Math.max(0, colOfLatestMove - distance); i < Math.min(size, colOfLatestMove + distance); i++) {
+//                    if (tryMove(rowOfLatestMove - distance, i, turn, nextPositions, count)) count++;
+//                    if (count >= children) return nextPositions;
+//                }
+//            }
+//            
+//            if(!isOverEdge(rowOfLatestMove + distance)) {
+//                for (int i = Math.max(0, colOfLatestMove - distance); i < Math.min(size, colOfLatestMove + distance); i++) {
+//                    if (tryMove(rowOfLatestMove + distance, i, turn, nextPositions, count)) count++;
+//                    if (count >= children) return nextPositions;
+//                }
+//            }
+//            
+//            if(!isOverEdge(colOfLatestMove - distance)) {
+//                for (int i = Math.max(1, rowOfLatestMove - distance + 1); i < Math.min(size - 1, rowOfLatestMove + distance - 1); i++) {
+//                    if (tryMove(i, colOfLatestMove - distance, turn, nextPositions, count)) count++;
+//                    if (count >= children) return nextPositions;
+//                }
+//            }
+//            
+//            if(!isOverEdge(colOfLatestMove + distance)) {
+//                for (int i = Math.max(1, rowOfLatestMove - distance + 1); i < Math.min(size - 1, rowOfLatestMove + distance                                    - 1); i++) {
+//                    if (tryMove(i, colOfLatestMove + distance, turn, nextPositions, count)) count++;
+//                    if (count >= children) return nextPositions;
+//                }
+//            }
+//            
+//            distance++;
+//        }
         
         
         
