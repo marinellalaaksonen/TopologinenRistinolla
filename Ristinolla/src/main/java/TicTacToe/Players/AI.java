@@ -17,6 +17,7 @@ import TicTacToe.IO.IO;
 public class AI implements Player {
     private String mark;
     private Evaluator evaluator;
+    private int depthConstant;
     
     /**
      * @param mark if the player is palying with X or 0
@@ -25,6 +26,7 @@ public class AI implements Player {
     public AI(String mark, Evaluator evaluator) {
         this.mark = mark;
         this.evaluator = evaluator;
+        this.depthConstant = 28;
     }
     
     /**
@@ -101,7 +103,8 @@ public class AI implements Player {
     private Position bestMoveForX(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
-        int value = Integer.MIN_VALUE;int alpha = Integer.MIN_VALUE;
+        int value = Integer.MIN_VALUE;
+        int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
             
         for (int i = 0; i < nextPositions.length; i++) {
@@ -133,11 +136,10 @@ public class AI implements Player {
      * @return next move for the AI
      */
     @Override
-    public String move(IO io, TicTacToeGame game) {
-        Position currentPosition = game.getPosition();
+    public String move(IO io, Position currentPosition) {
         Position bestMove;
         
-        int depth = 80/currentPosition.getMovesLeft() + 38/10; 
+        int depth = 80/currentPosition.getMovesLeft() + depthConstant/10; 
 
         long startTime = System.currentTimeMillis();
 
@@ -163,6 +165,10 @@ public class AI implements Player {
     @Override
     public String getMark() {
         return this.mark;
+    }
+    
+    public void setDepthConstant(int depthConstant) {
+        this.depthConstant = depthConstant;
     }
     
 }

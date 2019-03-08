@@ -68,13 +68,27 @@ public class TicTacToe {
         }
     }
     
+    private void chooseAIPerformance(AI ai) {
+        io.print("Valitse H (hidas) tai N (nopea) tekoäly: ");
+        String speed = io.nextLine().toUpperCase();
+        
+        if (speed.equals("N")) ai.setDepthConstant(28);
+        else if (speed.equals("H")) ai.setDepthConstant(38);
+        else {
+            io.print("Virheellinen valinta");
+            chooseAIPerformance(ai)
+;        }
+    }
+    
     private Player choosePlayer(String mark) {
         io.print("Valitse pelaaja " + mark + " I (ihminen) tai T (tekoäly): ");
         String player = io.nextLine();
         
         if (player.toUpperCase().equals("I")) return new HumanPlayer(mark);
         else if (player.toUpperCase().equals("T")) {
-            return new AI(mark, game.getEvaluator());
+            AI ai = new AI(mark, game.getEvaluator());
+            chooseAIPerformance(ai);
+            return ai;
         } else {
             io.print("Virheellinen valinta");
             return choosePlayer(mark);
@@ -131,7 +145,7 @@ public class TicTacToe {
         
         while(!game.won() && !game.tie()) {
             io.print("Pelaajan " + playerInTurn.getMark() + " vuoro: ");
-            String move = playerInTurn.move(io, game);
+            String move = playerInTurn.move(io, game.getPosition());
             
             if (!game.makeMove(move, playerInTurn.getMark())) {
                 io.print("Siirto ei ole validi");

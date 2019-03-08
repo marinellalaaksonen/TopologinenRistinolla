@@ -5,7 +5,7 @@
  */
 package TicTacToe.Players;
 
-import TicTacToe.TicTacToeGame.TicTacToeGame;
+import TicTacToe.TicTacToeGame.Position;
 import TicTacToe.IO.*;
 
 /**
@@ -13,6 +13,6 @@ import TicTacToe.IO.*;
  * @author marinella
  */
 public interface Player {
-    String move(IO io, TicTacToeGame game);
+    String move(IO io, Position currentPosition);
     String getMark();
 }

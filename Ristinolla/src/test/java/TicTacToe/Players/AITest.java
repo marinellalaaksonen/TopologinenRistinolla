@@ -42,44 +42,44 @@ public class AITest {
     public void moveWorksWhenXWinsWithNextMove() {
         String[][] board = {{"X", "X", null}, {null, "0", null}, {"0", null, null}};
         game.setPosition(new Position(board, 0, 1, 5));
-        assertEquals("1C", aiX.move(io, game));
+        assertEquals("1C", aiX.move(io, game.getPosition()));
     }
     
     @Test
     public void moveWorksWhen0WinsWithNextMove() {
         String[][] board = {{null, "X", "X"}, {"0", null, "X"}, {"0", null, null}};
         game.setPosition(new Position(board, 0, 1, 4));
-        assertEquals("1A", ai0.move(io, game));
+        assertEquals("1A", ai0.move(io, game.getPosition()));
     }
     
     @Test
     public void moveWorksWhenXChoosesBetweenBlockingAndWinning() {
         String[][] board = {{null, null, null}, {null, "0", "X"}, {null, "0", "X"}};
         game.setPosition(new Position(board, 1, 1, 5));
-        assertEquals("1C", aiX.move(io, game));
+        assertEquals("1C", aiX.move(io, game.getPosition()));
     }
     
     @Test
     public void moveWorksWhenXBlocking0FromWinning() {
         String[][] board = {{"X", null, null}, {null, "0", "X"}, {null, "0", null}};
         game.setPosition(new Position(board, 1, 1, 5));
-        assertEquals("1B", aiX.move(io, game));
+        assertEquals("1B", aiX.move(io, game.getPosition()));
     }
     
     @Test
     public void moveWorksWhen0BlockingXFromWinning() {
         String[][] board = {{"X", null, null}, {null, null, null}, {null, "0", "X"}};
         game.setPosition(new Position(board, 0, 0, 6));
-        assertEquals("2B", ai0.move(io, game));
+        assertEquals("2B", ai0.move(io, game.getPosition()));
     }
     
     @Test
     public void moveWorksWhenXSeveralMovesFromWinning() {
         String[][] board = {{"0", "X", "X"}, {null, null, null}, {null, null, "0"}};
         game.setPosition(new Position(board, 0, 0, 5));
-        game.makeMove(aiX.move(io, game), "X");
-        game.makeMove(ai0.move(io, game), "0");
-        game.makeMove(aiX.move(io, game), "X");
+        game.makeMove(aiX.move(io, game.getPosition()), "X");
+        game.makeMove(ai0.move(io, game.getPosition()), "0");
+        game.makeMove(aiX.move(io, game.getPosition()), "X");
         assertEquals(true, game.won());
     }
     
@@ -87,10 +87,10 @@ public class AITest {
     public void moveWorksWhen0SeveralMovesFromWinning() {
         String[][] board = {{"0", "0", null}, {"X", null, null}, {"X", null, null}};
         game.setPosition(new Position(board, 0, 0, 5));
-        game.makeMove(aiX.move(io, game), "X");
-        game.makeMove(ai0.move(io, game), "0");
-        game.makeMove(aiX.move(io, game), "X");
-        game.makeMove(ai0.move(io, game), "0");
+        game.makeMove(aiX.move(io, game.getPosition()), "X");
+        game.makeMove(ai0.move(io, game.getPosition()), "0");
+        game.makeMove(aiX.move(io, game.getPosition()), "X");
+        game.makeMove(ai0.move(io, game.getPosition()), "0");
         assertEquals(true, game.won());
     }
 }

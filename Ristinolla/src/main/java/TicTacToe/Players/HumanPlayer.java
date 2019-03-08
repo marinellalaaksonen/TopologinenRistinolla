@@ -5,7 +5,7 @@
  */
 package TicTacToe.Players;
 
-import TicTacToe.TicTacToeGame.TicTacToeGame;
+import TicTacToe.TicTacToeGame.Position;
 import TicTacToe.IO.IO;
 
 /**
@@ -30,7 +30,7 @@ public class HumanPlayer implements Player {
      * @return next move of the player
      */
     @Override
-    public String move(IO io, TicTacToeGame game) {
+    public String move(IO io, Position currentPosition) {
         io.print("Anna seuraava siirto (esimerikiksi 3A): ");
         return io.nextLine();
     }
