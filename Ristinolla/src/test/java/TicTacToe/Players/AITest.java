@@ -101,7 +101,7 @@ public class AITest {
     
     @Test
     public void moveWorksWithEmptyEvenSizedBoard() {
-        TicTacToeGame evenGame = TicTacToeGame.createCylinderTicTacToe(4, 4);
-        assertEquals("2B", ai0.move(io, game.getPosition()));
+        TicTacToeGame evenSizedGame = TicTacToeGame.createCylinderTicTacToe(4, 4);
+        assertEquals("3C", ai0.move(io, evenSizedGame.getPosition()));
     }
 }
