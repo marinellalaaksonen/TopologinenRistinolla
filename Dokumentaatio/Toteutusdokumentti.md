@@ -3,7 +3,7 @@
 
 ## Ohjelman yleisrakenne
 
-Ohjelman rakenne koostuu teksitikäyttöliittymästä (TicTacToe.java), pelin logiikan toteuttavista luokista (kansio TicTacToeGames) ja pelaajien toiminnallisuuden toteuttavista luokista (kansio Players). Tekstikäyttöliittymä luo halutunlaisen pelin, eli olion TicTacToeGame, jolla on riippuvuus Evaluatoriin. Evaluator hyödyntää pelityyppikohtaisissa siirroissa (laudan reunojen yli menemiset) GameType-rajapinnan toteuttavien pelin tyyppi-luokkien avulla. Peliin liittyy aina myös sen hetkinen pelitilanne Position. Tekstikäyttöliittymä luo myös kummallekin pelaajalle omat Player-rajapinnan toteuttavat oliot (HumanPlayer tai AI), jotka huolehtivat siirtojen teosta.
+Ohjelman rakenne koostuu teksitikäyttöliittymästä (TicTacToe.java), pelin logiikan toteuttavista luokista (kansio TicTacToeGames), eri pelityypeistä (kansio GameTypes) ja pelaajien toiminnallisuuden toteuttavista luokista (kansio Players). Tekstikäyttöliittymä luo halutunlaisen pelin, eli olion TicTacToeGame, jolla on riippuvuus Evaluatoriin. Evaluator hyödyntää pelityyppikohtaisissa siirroissa (laudan reunojen yli menemiset) GameType-rajapinnan toteuttavien pelin tyyppi-luokkien avulla. Peliin liittyy aina myös sen hetkinen pelitilanne Position. Tekstikäyttöliittymä luo myös kummallekin pelaajalle omat Player-rajapinnan toteuttavat oliot (HumanPlayer tai AI), jotka huolehtivat siirtojen teosta.
 
 todo: UML-kaavio
 
@@ -17,10 +17,18 @@ AmountOfChildrenin arvolla säädellään huomioitavan pelikentän osan laajuutt
 
 ## Saavutetut aika- ja tilavaativuudet
 
-Tällä hetkellä minmax-algoritmi on isommilla kentillä rajoitettu syvyyteen 3, jolloin sen aikavaativuus on n^3. Aikavaativuus muuttuu riippuen Jäljellä olevien siirtojen määrästä kaavalla 80/MovesLeft + 28/10. Tällöin se menee syvyyteen 3 kun siirtoja on jäljellä 67 tai enemmän ja syvyyteen 4 kun siirotja on jäljellä 37-66.
+Tällä hetkellä minmax-algoritmin syvyys on määritelty kaavalla 80/movesLeft + 28/10 (nopea AI) tai 80/movesLeft + 38/10 (hidas AI), jolloin sen aikavaativuus on n^(80/movesLeft + 28/10), missä n on kentällä olevien ruutujen määrä. Tällöin se menee syvyyteen 3 kun siirtoja on jäljellä 67 tai enemmän ja syvyyteen 4 kun siirotja on jäljellä 37-66. Minmaxin käyttämä position-luokan generateChildren-metodi kopioi jokaiselle lapselle (enintään n) uuden pelilaudan, eli sen aikavaativuus on n * n. Minmaxin käyttämät won ja evaluate -metodien aikavaativuus on lineaarinen suhteessa voittosuoran pituuteen (enintään 8 * wincondition), jolloin ne eivät merkittävästi vaikuta aikavaativuuteen. Tällöin koko algoritmin aikavaativuus on O(n ^ (2 * (80/n + 28/10))). Käytännössä algoritmin aikavaativuus on usein alphabetapruningin ansiosta parempi, mutta myös sen huonoimman tapauksen aikavaativuus on sama kuin perusmuotoisella alphabetalla.
 
-todo: won ja evaluate -metodien aikavaativuudet, tilavaativuus 
+Minmaxin jokaisella solmulla on lapsensa (n - tehdyt siirrot) listana, jolloin jokaisen solmun tilavaativuus on n*n. Koska minmaxia käydään läpi syvyyshaulla on solmuja kerrallaan muistissa korkeintaan syvyyden verran, jolloin algoritmin tilavaativuus on (80/movesLeft + 28/10) * n^2 eli O(n^2).
 
 
-## Työn mahdolliset puutteet ja parannusehdotukset
+## Puutteet ja parannusehdotukset
+
+AI-vastustajaa vastaan pystyy tällä hetkellä pelaamaan pahinta aikavaativuutta pelaamalla oikeaan alanurkkaan. Tämä hidastaa varsinkin hitaamman AI-vastustajan suoriutumista merkittävästi. Tätä voisi korjata aloittamalla lasten luonti olemassa olevien pelisiirtojen läheltä (esimerkiksi viimeisimmä siirron ympäriltä, mikä mahdollistaisi myös isomman pelialueen kuin 12x12 käytön jos myös lasten määrää samalla rajoitettaisiin.
+
+Evaluate-metodin voisi muuttaa suosimaan siirtoja, joissa suoran molemmat päät ovat vapaat ja mahdollisesti huomioimaan myös blokit suoraan eikä ainoastaan välillisesti (estämällä voitot). Mahdollisesti myös suosimaan tasapeliä häviämisen sijaan tai depht:n laittamista osaksi evaluate-arvoa?
+
+Voitaisiin myös nopeuttaa selvästi pitämällä kirjaa jo kohdatuista tilanteista?
+
+
 ## Lähteet
