@@ -5,11 +5,20 @@
  */
 package TicTacToe.GameTypes;
 
-
+/**
+ * Methods of cylinder tictactoe to aid evaluator in gametype spesific moves. Can
+ * go over the vertical edges, but not horizontal.
+ * @author marinella
+ */
 public class CylinderTicTacToe implements GameType {
     private int size;
     private int winCondition;
     
+    /**
+     *
+     * @param size of the board
+     * @param winCondition
+     */
     public CylinderTicTacToe(int size, int winCondition) {
         this.size = size;
         this.winCondition = winCondition;
@@ -29,6 +38,17 @@ public class CylinderTicTacToe implements GameType {
         return position < 0 || position >= size;
     }
 
+    /**
+     * Handles going over edge. This method is only called if row or col have gone 
+     * over the edge of the board. If the row has gone over the edge the move is 
+     * incorrect, if only column is over edge the method returns the given row and 
+     * the column on the  opposite side of the board from where the play went over edge.
+     * @param row of tried move
+     * @param col of tried move
+     * @return first number is next row, second next column. Returns {-1, 0} if 
+     * row is over edge, otherwise returns the given row and the column on the 
+     * opposite side of the board from where the play went over edge.
+     */
     @Override
     public int[] goOverEdge(int row, int col) {
         int[] newRowAndCol = new int[2];

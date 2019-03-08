@@ -8,7 +8,8 @@ package TicTacToe.TicTacToeGame;
 import TicTacToe.GameTypes.*;
 
 /**
- *
+ * Creates the games, handles the actual playing and keeps track of the current 
+ * game situation/position
  * @author marinella
  */
 public class TicTacToeGame {
@@ -19,8 +20,7 @@ public class TicTacToeGame {
     /**
      * Constructor
      * @param size, size of the board
-     * @param winCondition, how many noughts/crosses in line are needed to win
-     * @param type basic or other
+     * @param evaluator
      */
     public TicTacToeGame(int size, Evaluator evaluator) {
         this.size = size;
@@ -29,30 +29,30 @@ public class TicTacToeGame {
     }
     
     /**
-     *
-     * @param size
-     * @param winCondition
-     * @return new tictactoe with basic
+     * Creates a new basic tic tac toe game
+     * @param size of the board
+     * @param winCondition how many marks needed in line to win
+     * @return new basic tictactoe
      */
     public static TicTacToeGame createBasicTicTacToe(int size, int winCondition) {
         return new TicTacToeGame(size, new Evaluator(new BasicTicTacToe(size, winCondition)));
     }
     
     /**
-     *
-     * @param size
-     * @param winCondition
-     * @return new cylinderTicTacToe
+     * Creates a new cylinder tic tac toe game
+     * @param size of the board
+     * @param winCondition how many marks needed in line to win
+     * @return new cylinder tictactoe
      */
     public static TicTacToeGame createCylinderTicTacToe(int size, int winCondition) {
         return new TicTacToeGame(size, new Evaluator(new CylinderTicTacToe(size, winCondition)));
     }
     
     /**
-     *
-     * @param size
-     * @param winCondition
-     * @return new MöbiusStripTicTacToe
+     * Creates a new Möbius strip tic tac toe game
+     * @param size of the board
+     * @param winCondition how many marks needed in line to win
+     * @return new Möbius strip tictactoe
      */
     public static TicTacToeGame createMobiusStripTicTacToe(int size, int winCondition) {
         return new TicTacToeGame(size, new Evaluator(new MobiusStripTicTacToe(size, winCondition)));
@@ -86,7 +86,7 @@ public class TicTacToeGame {
     }
     
     /**
-     *
+     * 
      * @return the board as string for printing
      */
     @Override
@@ -115,7 +115,7 @@ public class TicTacToeGame {
     }
      
     /**
-     *Makes the move on the board if it's valid
+     * Makes the move on the board if it's valid
      * @param move move of the player as string, for example 3A,
      * where 3 is row and A is column 1
      * @param turn X or 0 turn
@@ -142,7 +142,7 @@ public class TicTacToeGame {
     }
 
     /**
-     *
+     * Desidec if the game has ended in a tie
      * @return true if the board is full (there are no possible moves left)
      */
     public boolean tie() {
@@ -150,25 +150,17 @@ public class TicTacToeGame {
     }
     
     /**
-     *
+     * Checks if one side has won
      * @return true if the player in turn has won
      */
     public boolean won() {
         return evaluator.won(position);
     }
     
-    /**
-     *
-     * @return
-     */
     public String[][] getBoard() {
         return position.getBoard();
     }
-    
-    /**
-     *
-     * @return
-     */
+
     public Position getPosition() {
         return position;
     }

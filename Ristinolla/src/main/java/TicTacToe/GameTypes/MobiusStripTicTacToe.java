@@ -5,11 +5,19 @@
  */
 package TicTacToe.GameTypes;
 
-
+/**
+ * Still under developement, not tested and some bugs, can't be used yet.
+ * @author marinella
+ */
 public class MobiusStripTicTacToe implements GameType {
     private int size;
     private int winCondition;
     
+    /**
+     *
+     * @param size of the board
+     * @param winCondition
+     */
     public MobiusStripTicTacToe(int size, int winCondition) {
         this.size = size;
         this.winCondition = winCondition;

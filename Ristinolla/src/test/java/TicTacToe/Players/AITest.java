@@ -93,4 +93,15 @@ public class AITest {
         game.makeMove(ai0.move(io, game.getPosition()), "0");
         assertEquals(true, game.won());
     }
+    
+    @Test
+    public void moveWorksWithEmptyOddSizedBoard() {
+        assertEquals("2B", ai0.move(io, game.getPosition()));
+    }
+    
+    @Test
+    public void moveWorksWithEmptyEvenSizedBoard() {
+        TicTacToeGame evenGame = TicTacToeGame.createCylinderTicTacToe(4, 4);
+        assertEquals("2B", ai0.move(io, game.getPosition()));
+    }
 }

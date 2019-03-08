@@ -11,7 +11,8 @@ import TicTacToe.TicTacToeGame.Evaluator;
 import TicTacToe.IO.IO;
 
 /**
- * 
+ * The methods needed for AI to decide it's next move. Implements minmax with 
+ * alpha-beta pruning
  * @author marinella
  */
 public class AI implements Player {
@@ -21,7 +22,7 @@ public class AI implements Player {
     
     /**
      * @param mark if the player is palying with X or 0
-     * @param gameType basic or other
+     * @param evaluator
      */
     public AI(String mark, Evaluator evaluator) {
         this.mark = mark;
@@ -31,6 +32,12 @@ public class AI implements Player {
     
     /**
      * 0's turn, tries to minimize the value of the game from the position given
+     * @param position the current game position
+     * @param depht left to go (how many moves to go before returning)
+     * @param alpha the current alpha value from the parent
+     * @param beta the current beta value from the parent
+     * @param valueOfGame value of moves made by minmax this far
+     * @return the value of the made moves or the value of the game (if finished).
      */
     private int minNode(Position position, int depth, int alpha, int beta, int valueOfGame) {
         valueOfGame += evaluator.evaluate(position, "X", depth);
@@ -56,6 +63,12 @@ public class AI implements Player {
     
     /**
      * X's turn, tries to maximize the value of the game from the position given
+     * @param position the current game position
+     * @param depht left to go (how many moves to go before returning)
+     * @param alpha the current alpha value from the parent
+     * @param beta the current beta value from the parent
+     * @param valueOfGame value of moves made by minmax this far
+     * @return the value of the made moves or the value of the game (if finished).
      */
     private int maxNode(Position position, int depth, int alpha, int beta, int valueOfGame) {
         valueOfGame = evaluator.evaluate(position, "0", depth);
@@ -79,6 +92,15 @@ public class AI implements Player {
         return value;
     }
     
+    /**
+     * 0's turn, tries to minimize the value of the game from the position given
+     * @param position the current game position
+     * @param depht left to go (how many moves to go before returning)
+     * @param alpha the current alpha value from the parent
+     * @param beta the current beta value from the parent
+     * @param valueOfGame value of moves made by minmax this far
+     * @return the position of the best move
+     */
     private Position bestMoveFor0(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
@@ -100,6 +122,15 @@ public class AI implements Player {
         return bestMove;
     }
     
+    /**
+     * X's turn, tries to maximize the value of the game from the position given
+     * @param position the current game position
+     * @param depht left to go (how many moves to go before returning)
+     * @param alpha the current alpha value from the parent
+     * @param beta the current beta value from the parent
+     * @param valueOfGame value of moves made by minmax this far
+     * @return the position of the best move
+     */
     private Position bestMoveForX(Position currentPosition, int depth) {
         Position[] nextPositions = currentPosition.getNextPositions(mark);
         Position bestMove = nextPositions[0];
@@ -130,13 +161,19 @@ public class AI implements Player {
     }
 
     /**
-     * Makes the move for the AI
+     * Makes the move for the AI, in the middle of the board if first move, otherwise
+     * uses minmax to determine the move.
      * @param io
-     * @param game current game situation
+     * @param currentPosition
      * @return next move for the AI
      */
     @Override
     public String move(IO io, Position currentPosition) {
+        int size = currentPosition.getBoard().length;
+        if (currentPosition.getMovesLeft() == size * size) {
+            return "" + (size / 2 + 1) + convertIntToChar(size / 2);
+        }
+        
         Position bestMove;
         
         int depth = 80/currentPosition.getMovesLeft() + depthConstant/10; 
@@ -167,6 +204,10 @@ public class AI implements Player {
         return this.mark;
     }
     
+    /**
+     * Sets the constant which regulates how deep minmax goes
+     * @param depthConstant
+     */
     public void setDepthConstant(int depthConstant) {
         this.depthConstant = depthConstant;
     }

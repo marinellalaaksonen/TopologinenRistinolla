@@ -9,7 +9,7 @@ import TicTacToe.TicTacToeGame.Position;
 import TicTacToe.IO.IO;
 
 /**
- *
+ * Handles interaction with human player
  * @author marinella
  */
 public class HumanPlayer implements Player {
@@ -24,7 +24,7 @@ public class HumanPlayer implements Player {
     }
 
     /**
-     *
+     * Asks the move from the player and returns it
      * @param io
      * @param game
      * @return next move of the player

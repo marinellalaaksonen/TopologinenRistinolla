@@ -11,7 +11,7 @@ import TicTacToe.Players.*;
  */
 
 /**
- *
+ * Textual UI for TicTacToe, handles interaction with the players.
  * @author marinella
  */
 public class TicTacToe {
@@ -20,7 +20,7 @@ public class TicTacToe {
     
     /**
      * Constructor
-     * @param io
+     * @param io to be used
      */
     public TicTacToe(IO io) {
         this.io = io;
@@ -68,6 +68,9 @@ public class TicTacToe {
         }
     }
     
+    /**
+     * Asks player to select AI performance and updates it to the AI
+     */
     private void chooseAIPerformance(AI ai) {
         io.print("Valitse H (hidas) tai N (nopea) tekoäly: ");
         String speed = io.nextLine().toUpperCase();
@@ -80,6 +83,10 @@ public class TicTacToe {
 ;        }
     }
     
+    /**
+     * Asks player to select playertype(AI or human player)
+     * @return new Player object
+     */
     private Player choosePlayer(String mark) {
         io.print("Valitse pelaaja " + mark + " I (ihminen) tai T (tekoäly): ");
         String player = io.nextLine();
@@ -95,11 +102,14 @@ public class TicTacToe {
         }
     }
     
+    /**
+     * Asks player to select gametype, creates and updates it to the object parameter
+     */
     private void chooseGameType(int size, int winCondition) {
         io.print("Valitse pelityyppi:\n"
-            + "B = basic\n"
-            + "C = cylinder\n"
-            + "M = Möbius strip"
+            + "B = basic"
+            + "\nC = cylinder"
+//            + "\nM = Möbius strip"
         );
         
         String gameType = io.nextLine().toUpperCase();
@@ -108,8 +118,8 @@ public class TicTacToe {
             this.game = TicTacToeGame.createBasicTicTacToe(size, winCondition);
         } else if (gameType.equals("C")) {
             this.game = TicTacToeGame.createCylinderTicTacToe(size, winCondition);
-        } else if (gameType.equals("M")) {
-            this.game = TicTacToeGame.createMobiusStripTicTacToe(size, winCondition);
+//        } else if (gameType.equals("M")) {
+//            this.game = TicTacToeGame.createMobiusStripTicTacToe(size, winCondition);
         } else {
             io.print("Virheellinen valinta");
             chooseGameType(size, winCondition);

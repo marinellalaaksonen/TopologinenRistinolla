@@ -8,13 +8,18 @@ package TicTacToe.TicTacToeGame;
 import TicTacToe.GameTypes.GameType;
 
 /**
- *
+ * Helps to determine the value of the game if it's finished or the latest move made
  * @author marinella
  */
 public class Evaluator {
     private final GameType gameType;
     private final int winCondition;
     
+    /**
+     *
+     * @param gameType the gametype that helps the evaluator to determine how going over
+     * edges should be handled
+     */
     public Evaluator(GameType gameType) {
         this.gameType = gameType;
         this.winCondition = gameType.getWinCondition();
@@ -90,6 +95,7 @@ public class Evaluator {
     
     /**
      * Checks if one side has won, checks only around the latest move
+     * @param position
      * @return true if the side that made the last move has won, otherwise false
      */
     public boolean won(Position position) {
@@ -112,6 +118,16 @@ public class Evaluator {
         else return true;
     }
     
+    /**
+     * Checks recirsively how many X/0 would be possible to fit in a row to that direction
+     * @param currentRowPos the current row
+     * @param currentColPos the current col
+     * @param rowDiff which direction to move on between rows (1 moves right, 
+     * -1 left, 0 stays in place)
+     * @param colDiff which direction to move on between columnss (1 moves down, 
+     * -1 up, 0 stays in place)
+     * @return how many X/0 would be possible to fit in a line to that direction
+     */
     private int howManyPossibleInRow(Position position, int currentRowPos, int currentColPos, 
             int rowDiff, int colDiff, String turn, int maxLength) {
         int nextRowPosition = currentRowPos + rowDiff;
@@ -162,6 +178,12 @@ public class Evaluator {
 //        return marks;
 //    }
     
+    /**
+     * Checks if a winning line fits on a row, returns 0 if it doesn't and the 
+     * length of the current line if it does.
+     * @return 0 if the available place is too short, otherwise the length of the 
+     * current line
+     */
     private int checkRow(Position position, int currentRowPos, int currentColPos, 
             String turn, int size) {
         int rowLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
@@ -176,6 +198,12 @@ public class Evaluator {
         }
     }
     
+    /**
+     * Checks if a winning line fits on a column, returns 0 if it doesn't and the 
+     * length of the current line if it does.
+     * @return 0 if the available place is too short, otherwise the length of the 
+     * current line
+     */
     private int checkCol(Position position, int currentRowPos, int currentColPos, 
             String turn, int size) {
         int colDown = howManyPossibleInRow(position, currentRowPos, currentColPos, 
@@ -190,6 +218,12 @@ public class Evaluator {
         }
     }
     
+    /**
+     * Checks if a winning line fits diagonally up, returns 0 if it doesn't and the 
+     * length of the current line if it does.
+     * @return 0 if the available place is too short, otherwise the length of the 
+     * current line
+     */
     private int checkDiagonalUp(Position position, int currentRowPos, int currentColPos, 
             String turn, int size) {
         int bottomLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
@@ -204,6 +238,12 @@ public class Evaluator {
         }
     }
     
+    /**
+     * Checks if a winning line fits diagonally down, returns 0 if it doesn't and the 
+     * length of the current line if it does.
+     * @return 0 if the available place is too short, otherwise the length of the 
+     * current line
+     */
     private int checkDiagonalDown(Position position, int currentRowPos, int currentColPos, 
             String turn, int size) {
         int topLeft = howManyPossibleInRow(position, currentRowPos, currentColPos, 
@@ -219,10 +259,12 @@ public class Evaluator {
     }
     
     /**
-     *
+     * Evaluates the value of the game if the game is finished, otherwise the value 
+     * of the latest move
+     * @param position the current game position
      * @param turn of X or 0
-     * @return estimated value of the game in the position given 
-     * or value of the game if finished
+     * @param depthLeft on minmax, helps to prefer early wins
+     * @return the value of the latest move or the value of the game if finished
      */
     public int evaluate(Position position, String turn, int depthLeft) {
         if (won(position)) {

@@ -12,21 +12,16 @@ package TicTacToe.GameTypes;
  * @author marinella
  */
 public interface GameType {
-
-//    /**
-//     *
-//     * @param turn of X or 0
-//     * @return estimated value of the game in the position given
-//     */
-//    int evaluate(Position position, String turn, int depthLeft);
-//
-//    /**
-//     * Checks if one side has won, checks only around the latest move
-//     * @return true if the side that made the last move has won, otherwise false
-//     */
-//    boolean won(Position position);
     
     int getSize();
     int getWinCondition();
+
+    /**
+     * Handles going over the edge of the board in different gametypes.
+     * @param row of tried move
+     * @param col of tried move
+     * @return an array where the first number is row of next move and second the 
+     * column. Returns -1 as either row or col if the move is incorrect
+     */
     int[] goOverEdge(int row, int col);
 }

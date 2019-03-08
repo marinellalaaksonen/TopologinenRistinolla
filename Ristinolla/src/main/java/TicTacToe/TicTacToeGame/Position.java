@@ -9,7 +9,7 @@ import TicTacToe.IO.*;
  */
 
 /**
- *
+ * Current game position/situation
  * @author marinella
  */
 public class Position {
@@ -22,7 +22,7 @@ public class Position {
     
     /**
      * 
-     * @param board
+     * @param board current game board
      * @param colOfLatestMove
      * @param rowOfLatestMove
      * @param movesLeft
@@ -48,9 +48,9 @@ public class Position {
     
     /**
      * makes the move on the board if the move is valid
-     * @param row
-     * @param col
-     * @param turn
+     * @param row of the desired move
+     * @param col column of the desired move
+     * @param turn of X or 0
      * @return true if sucsessfull
      */
     public boolean makeMove(int row, int col, String turn) {
@@ -80,6 +80,11 @@ public class Position {
         );
     }
     
+    /**
+     * Tries generate a new child by making a move, adds the child to nextPositions
+     * if sucsessfull
+     * @return true if the move is valid, otherwise false
+     */
     private boolean tryMove(int row, int col, String turn, Position[] nextPositions, int count) {
         if (isValidMove(row, col)) {
             Position clonedPosition = clonePosition(this);
@@ -190,7 +195,11 @@ public class Position {
         this.movesLeft = movesLeft;
     }
     
-    public int getAmountOfChildren() {
-        return amountOfChildren;
-    }
+//    /**
+//     * 
+//     * @return
+//     */
+//    public int getAmountOfChildren() {
+//        return amountOfChildren;
+//    }
 }
