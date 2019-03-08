@@ -1,7 +1,8 @@
+package TicTacToe.Main;
 
-import TicTacToeGame.TicTacToeGame;
-import IO.*;
-import Players.*;
+import TicTacToe.TicTacToeGame.TicTacToeGame;
+import TicTacToe.IO.*;
+import TicTacToe.Players.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

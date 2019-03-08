@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Players;
-
-import TicTacToeGame.TicTacToeGame;
-import IO.*;
+package TicTacToe.IO;
 
 /**
  *
  * @author marinella
  */
-public interface Player {
-    String move(IO io, TicTacToeGame game);
-    String getMark();
+public interface IO {
+    String nextLine();
+    void print(String s);
 }

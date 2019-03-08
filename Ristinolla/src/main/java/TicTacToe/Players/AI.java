@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Players;
+package TicTacToe.Players;
 
-import TicTacToeGame.TicTacToeGame;
-import TicTacToeGame.Position;
-import TicTacToeGame.Evaluator;
-import IO.IO;
+import TicTacToe.TicTacToeGame.TicTacToeGame;
+import TicTacToe.TicTacToeGame.Position;
+import TicTacToe.TicTacToeGame.Evaluator;
+import TicTacToe.IO.IO;
 
 /**
  *

@@ -1,6 +1,6 @@
-package TicTacToeGame;
+package TicTacToe.TicTacToeGame;
 
-import IO.*;
+import TicTacToe.IO.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

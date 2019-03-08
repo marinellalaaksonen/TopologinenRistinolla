@@ -3,26 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GameTypes;
+package TicTacToe.GameTypes;
 
 
-public class MobiusStripTicTacToe implements GameType {
+public class CylinderTicTacToe implements GameType {
     private int size;
     private int winCondition;
     
-    public MobiusStripTicTacToe(int size, int winCondition) {
+    public CylinderTicTacToe(int size, int winCondition) {
         this.size = size;
         this.winCondition = winCondition;
     }
 
     @Override
     public int getSize() {
-        return this.size;
+        return size;
     }
 
     @Override
     public int getWinCondition() {
-        return this.winCondition;
+        return winCondition;
     }
     
     private boolean out(int position) {
@@ -36,13 +36,13 @@ public class MobiusStripTicTacToe implements GameType {
         if (out(row)) {
             newRowAndCol[0] = -1;
             return newRowAndCol;
+        } else {
+            newRowAndCol[0] = row;
         }
         
         if (out(col)) {
             if (col == -1) newRowAndCol[1] = size - 1;
             else if (col == size) newRowAndCol[1] = 0;
-            
-            newRowAndCol[0] = size - 1 - row;
         } else newRowAndCol[1] = col;
         
         return newRowAndCol;

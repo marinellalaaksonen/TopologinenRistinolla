@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TicTacToeGame;
+package TicTacToe.TicTacToeGame;
 
-import GameTypes.GameType;
+import TicTacToe.GameTypes.GameType;
 
 /**
  *
@@ -138,29 +138,29 @@ public class Evaluator {
         }
     }
     
-    private int countMarksInLine(Position position, int firstRowPos, int firstColPos, 
-            int rowDiff, int colDiff, String turn, int length) {
-        int marks = 0;
-        String[][] board = position.getBoard();
-        
-        if (rowDiff == 0) {
-            for (int i = firstColPos; i < length && i > 0; i += colDiff) {
-                if (areEqual(board[firstRowPos][i], turn)) marks++;
-            }
-        } else if (colDiff == 0) {
-            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
-                if (areEqual(board[i][firstColPos], turn)) marks++;
-            }
-        } else {
-            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
-                for (int j = firstColPos; j < length && j > 0; j += colDiff) {
-                    if (areEqual(board[i][j], turn)) marks++;
-                }
-            }
-        }
-        
-        return marks;
-    }
+//    private int countMarksInLine(Position position, int firstRowPos, int firstColPos, 
+//            int rowDiff, int colDiff, String turn, int length) {
+//        int marks = 0;
+//        String[][] board = position.getBoard();
+//        
+//        if (rowDiff == 0) {
+//            for (int i = firstColPos; i < length && i > 0; i += colDiff) {
+//                if (areEqual(board[firstRowPos][i], turn)) marks++;
+//            }
+//        } else if (colDiff == 0) {
+//            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
+//                if (areEqual(board[i][firstColPos], turn)) marks++;
+//            }
+//        } else {
+//            for (int i = firstRowPos; i < length && i > 0; i += rowDiff) {
+//                for (int j = firstColPos; j < length && j > 0; j += colDiff) {
+//                    if (areEqual(board[i][j], turn)) marks++;
+//                }
+//            }
+//        }
+//        
+//        return marks;
+//    }
     
     private int checkRow(Position position, int currentRowPos, int currentColPos, 
             String turn, int size) {
@@ -172,8 +172,7 @@ public class Evaluator {
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
-            return countMarksInLine(position, currentRowPos, currentColPos - rowLeft, 
-                0, 1, turn, lengthOfPossibleRow);
+            return howManyStraightInRow(position, currentRowPos, currentColPos);
         }
     }
     
@@ -187,8 +186,7 @@ public class Evaluator {
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
-            return countMarksInLine(position, currentRowPos - colUp, currentColPos, 
-                1, 0, turn, lengthOfPossibleRow);
+            return howManyStraightInCol(position, currentRowPos, currentColPos);
         }
     }
     
@@ -202,8 +200,7 @@ public class Evaluator {
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
-            return countMarksInLine(position, currentRowPos + bottomLeft, 
-                currentColPos - bottomLeft, -1, 1, turn, lengthOfPossibleRow);
+            return howManyStraightDiagonalUp(position, currentRowPos, currentColPos);
         }
     }
     
@@ -217,8 +214,7 @@ public class Evaluator {
         
         if (lengthOfPossibleRow < winCondition) return 0;
         else {
-            return countMarksInLine(position, currentRowPos - topLeft, 
-                currentColPos - topLeft, 1, 1, turn, lengthOfPossibleRow);
+            return howManyStraightDiagonalDown(position, currentRowPos, currentColPos);
         }
     }
     
@@ -239,20 +235,30 @@ public class Evaluator {
         int valueOfGame = 0;
         int size = this.gameType.getSize();
         
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board[i][j] == null) continue;
-                else {
-                    //multiply with 1 if counting X (max), else with -1 (0 is trying to minimize)
-                    int multiplyWith = board[i][j].equals("X") ? 1 : -1; 
+        int row = position.getRowOfLatestMove();
+        int col = position.getColOfLatestMove();
+        
+        int multiplyWith = board[row][col].equals("X") ? 1 : -1; 
                     
-                    valueOfGame += multiplyWith * checkRow(position, i, j, turn, size);
-                    valueOfGame += multiplyWith * checkCol(position, i, j, turn, size);
-                    valueOfGame += multiplyWith * checkDiagonalDown(position, i, j, turn, size);
-                    valueOfGame += multiplyWith * checkDiagonalUp(position, i, j, turn, size);
-                }
-            }
-        }
+        valueOfGame += multiplyWith * checkRow(position, row, col, turn, size);
+        valueOfGame += multiplyWith * checkCol(position, row, col, turn, size);
+        valueOfGame += multiplyWith * checkDiagonalDown(position, row, col, turn, size);
+        valueOfGame += multiplyWith * checkDiagonalUp(position, row, col, turn, size);
+        
+//        for (int i = 0; i < size; i++) {
+//            for (int j = 0; j < size; j++) {
+//                if (board[i][j] == null) continue;
+//                else {
+//                    //multiply with 1 if counting X (max), else with -1 (0 is trying to minimize)
+//                    int multiplyWith = board[i][j].equals("X") ? 1 : -1; 
+//                    
+//                    valueOfGame += multiplyWith * checkRow(position, i, j, turn, size);
+//                    valueOfGame += multiplyWith * checkCol(position, i, j, turn, size);
+//                    valueOfGame += multiplyWith * checkDiagonalDown(position, i, j, turn, size);
+//                    valueOfGame += multiplyWith * checkDiagonalUp(position, i, j, turn, size);
+//                }
+//            }
+//        }
         return valueOfGame;
     }
 }

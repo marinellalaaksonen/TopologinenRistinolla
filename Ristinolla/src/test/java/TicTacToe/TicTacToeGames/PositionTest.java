@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TicTacToeGames;
+package TicTacToe.TicTacToeGames;
 
-import TicTacToeGame.Position;
+import TicTacToe.TicTacToeGame.Position;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
